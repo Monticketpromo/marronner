@@ -171,3 +171,41 @@ document.addEventListener("DOMContentLoaded", () => {
   
   // Les formulaires sont gérés par auth.js (avec Supabase)
 });
+// ============================================
+// MENU BURGER MOBILE
+// ============================================
+document.addEventListener("DOMContentLoaded", () => {
+  const burgerMenu = document.getElementById('burgerMenu');
+  const mainMenu = document.getElementById('mainMenu');
+  const body = document.body;
+  
+  if (burgerMenu && mainMenu) {
+    // Toggle menu burger
+    burgerMenu.addEventListener('click', () => {
+      burgerMenu.classList.toggle('active');
+      mainMenu.classList.toggle('active');
+      body.classList.toggle('menu-open');
+    });
+    
+    // Fermer le menu au clic sur un lien
+    const menuLinks = mainMenu.querySelectorAll('a');
+    menuLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        burgerMenu.classList.remove('active');
+        mainMenu.classList.remove('active');
+        body.classList.remove('menu-open');
+      });
+    });
+    
+    // Fermer le menu au clic sur l'overlay
+    body.addEventListener('click', (e) => {
+      if (body.classList.contains('menu-open') && 
+          !mainMenu.contains(e.target) && 
+          !burgerMenu.contains(e.target)) {
+        burgerMenu.classList.remove('active');
+        mainMenu.classList.remove('active');
+        body.classList.remove('menu-open');
+      }
+    });
+  }
+});
