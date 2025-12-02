@@ -157,18 +157,43 @@
       margin-top: 20px;
     }
     
+    .categories-container {
+      max-height: 500px;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+    
+    .category-section {
+      margin-bottom: 30px;
+    }
+    
+    .category-header {
+      font-size: 18px;
+      color: var(--primary);
+      margin: 0 0 15px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #E5E7EB;
+    }
+    
+    .subcategory-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+    }
+    
     .category-option {
-      padding: 20px;
+      padding: 15px;
       border: 2px solid #E5E7EB;
-      border-radius: 12px;
-      text-align: center;
+      border-radius: 8px;
       cursor: pointer;
       transition: all 0.3s;
+      background: white;
     }
     
     .category-option:hover {
       border-color: var(--secondary);
       background: #EFF6FF;
+      transform: translateY(-2px);
     }
     
     .category-option.selected {
@@ -248,48 +273,184 @@
       <!-- ÉTAPE 1 : Catégories de services -->
       <div class="step-content active" id="step1">
         <h2 class="step-title">Quels services proposes-tu ?</h2>
-        <p class="step-description">Sélectionne une ou plusieurs catégories (au moins 1)</p>
+        <p class="step-description">Sélectionne une ou plusieurs spécialités (au moins 1)</p>
         
-        <div class="category-grid" id="categoryGrid">
-          <div class="category-option" data-category="graphisme">
-            <div class="category-icon">🎨</div>
-            <div class="category-name">Graphisme</div>
+        <div class="categories-container">
+          <!-- Design & Créa -->
+          <div class="category-section">
+            <h3 class="category-header">🎨 Design & Créa</h3>
+            <div class="subcategory-grid">
+              <div class="category-option" data-category="logo-identite">
+                <div class="category-name">Logo & Identité visuelle</div>
+              </div>
+              <div class="category-option" data-category="graphisme-print">
+                <div class="category-name">Graphisme print (flyers, affiches)</div>
+              </div>
+              <div class="category-option" data-category="illustration">
+                <div class="category-name">Illustration</div>
+              </div>
+              <div class="category-option" data-category="ui-ux">
+                <div class="category-name">Design UI/UX</div>
+              </div>
+              <div class="category-option" data-category="infographie">
+                <div class="category-name">Infographie</div>
+              </div>
+            </div>
           </div>
-          <div class="category-option" data-category="informatique">
-            <div class="category-icon">💻</div>
-            <div class="category-name">Informatique</div>
+          
+          <!-- Informatique & Web -->
+          <div class="category-section">
+            <h3 class="category-header">💻 Informatique & Web</h3>
+            <div class="subcategory-grid">
+              <div class="category-option" data-category="creation-site">
+                <div class="category-name">Création site internet</div>
+              </div>
+              <div class="category-option" data-category="dev-web-app">
+                <div class="category-name">Développement web/app</div>
+              </div>
+              <div class="category-option" data-category="seo">
+                <div class="category-name">Référencement SEO</div>
+              </div>
+              <div class="category-option" data-category="maintenance-info">
+                <div class="category-name">Maintenance informatique</div>
+              </div>
+              <div class="category-option" data-category="reparation-tech">
+                <div class="category-name">Réparation ordinateur/téléphone</div>
+              </div>
+            </div>
           </div>
-          <div class="category-option" data-category="coiffure">
-            <div class="category-icon">✂️</div>
-            <div class="category-name">Coiffure</div>
+          
+          <!-- Audiovisuel -->
+          <div class="category-section">
+            <h3 class="category-header">📱 Audiovisuel</h3>
+            <div class="subcategory-grid">
+              <div class="category-option" data-category="montage-video">
+                <div class="category-name">Montage vidéo</div>
+              </div>
+              <div class="category-option" data-category="photographie">
+                <div class="category-name">Photographie</div>
+              </div>
+              <div class="category-option" data-category="streaming">
+                <div class="category-name">Streaming/Production</div>
+              </div>
+              <div class="category-option" data-category="animation">
+                <div class="category-name">Animation 2D/3D</div>
+              </div>
+            </div>
           </div>
-          <div class="category-option" data-category="artisanat">
-            <div class="category-icon">🔨</div>
-            <div class="category-name">Artisanat</div>
+          
+          <!-- Beauté & Bien-être -->
+          <div class="category-section">
+            <h3 class="category-header">✂️ Beauté & Bien-être</h3>
+            <div class="subcategory-grid">
+              <div class="category-option" data-category="coiffure">
+                <div class="category-name">Coiffure</div>
+              </div>
+              <div class="category-option" data-category="esthetique">
+                <div class="category-name">Esthétique/Maquillage</div>
+              </div>
+              <div class="category-option" data-category="massage">
+                <div class="category-name">Massage</div>
+              </div>
+              <div class="category-option" data-category="manucure">
+                <div class="category-name">Manucure/Pédicure</div>
+              </div>
+            </div>
           </div>
-          <div class="category-option" data-category="cuisine">
-            <div class="category-icon">👨‍🍳</div>
-            <div class="category-name">Cuisine</div>
+          
+          <!-- Artisanat & Bâtiment -->
+          <div class="category-section">
+            <h3 class="category-header">🔨 Artisanat & Bâtiment</h3>
+            <div class="subcategory-grid">
+              <div class="category-option" data-category="menuiserie">
+                <div class="category-name">Menuiserie</div>
+              </div>
+              <div class="category-option" data-category="plomberie">
+                <div class="category-name">Plomberie</div>
+              </div>
+              <div class="category-option" data-category="electricite">
+                <div class="category-name">Électricité</div>
+              </div>
+              <div class="category-option" data-category="peinture">
+                <div class="category-name">Peinture</div>
+              </div>
+              <div class="category-option" data-category="renovation">
+                <div class="category-name">Rénovation</div>
+              </div>
+            </div>
           </div>
-          <div class="category-option" data-category="batiment">
-            <div class="category-icon">🏗️</div>
-            <div class="category-name">Bâtiment</div>
+          
+          <!-- Cuisine & Traiteur -->
+          <div class="category-section">
+            <h3 class="category-header">👨‍🍳 Cuisine & Traiteur</h3>
+            <div class="subcategory-grid">
+              <div class="category-option" data-category="chef-domicile">
+                <div class="category-name">Chef à domicile</div>
+              </div>
+              <div class="category-option" data-category="patisserie">
+                <div class="category-name">Pâtisserie</div>
+              </div>
+              <div class="category-option" data-category="traiteur">
+                <div class="category-name">Traiteur événements</div>
+              </div>
+              <div class="category-option" data-category="cours-cuisine">
+                <div class="category-name">Cours de cuisine</div>
+              </div>
+            </div>
           </div>
-          <div class="category-option" data-category="evenementiel">
-            <div class="category-icon">🎉</div>
-            <div class="category-name">Événementiel</div>
+          
+          <!-- Événementiel -->
+          <div class="category-section">
+            <h3 class="category-header">🎉 Événementiel</h3>
+            <div class="subcategory-grid">
+              <div class="category-option" data-category="dj-animation">
+                <div class="category-name">DJ/Animation</div>
+              </div>
+              <div class="category-option" data-category="decoration">
+                <div class="category-name">Décoration</div>
+              </div>
+              <div class="category-option" data-category="organisation-mariage">
+                <div class="category-name">Organisation mariages</div>
+              </div>
+              <div class="category-option" data-category="photobooth">
+                <div class="category-name">Photobooth</div>
+              </div>
+            </div>
           </div>
-          <div class="category-option" data-category="transport">
-            <div class="category-icon">🚗</div>
-            <div class="category-name">Transport</div>
+          
+          <!-- Transport & Livraison -->
+          <div class="category-section">
+            <h3 class="category-header">🚗 Transport & Livraison</h3>
+            <div class="subcategory-grid">
+              <div class="category-option" data-category="livraison">
+                <div class="category-name">Livraison</div>
+              </div>
+              <div class="category-option" data-category="demenagement">
+                <div class="category-name">Déménagement</div>
+              </div>
+              <div class="category-option" data-category="vtc">
+                <div class="category-name">VTC/Taxi</div>
+              </div>
+            </div>
           </div>
-          <div class="category-option" data-category="cours">
-            <div class="category-icon">📚</div>
-            <div class="category-name">Cours/Formation</div>
-          </div>
-          <div class="category-option" data-category="autre">
-            <div class="category-icon">✨</div>
-            <div class="category-name">Autre</div>
+          
+          <!-- Cours & Formation -->
+          <div class="category-section">
+            <h3 class="category-header">📚 Cours & Formation</h3>
+            <div class="subcategory-grid">
+              <div class="category-option" data-category="soutien-scolaire">
+                <div class="category-name">Soutien scolaire</div>
+              </div>
+              <div class="category-option" data-category="cours-langue">
+                <div class="category-name">Cours de langue</div>
+              </div>
+              <div class="category-option" data-category="cours-musique">
+                <div class="category-name">Cours de musique</div>
+              </div>
+              <div class="category-option" data-category="formation-pro">
+                <div class="category-name">Formation professionnelle</div>
+              </div>
+            </div>
           </div>
         </div>
         
