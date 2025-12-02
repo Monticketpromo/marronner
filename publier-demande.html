@@ -35,13 +35,101 @@
 
   <!-- MESSAGE POUR NON-CONNECTÉS -->
   <section id="loginRequired" style="display: none;">
-    <div class="container" style="padding: 100px 20px; text-align: center;">
-      <div style="max-width: 500px; margin: 0 auto; background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
-        <div style="font-size: 4em; margin-bottom: 20px;">🔒</div>
-        <h2 style="color: var(--primary); margin-bottom: 15px;">Connexion requise</h2>
-        <p style="color: #6b7280; margin-bottom: 30px; font-size: 1.1em;">Vous devez être connecté pour publier une demande sur Marronner.</p>
-        <a href="connexion.html" class="cta" style="display: inline-block; padding: 14px 32px; background: var(--secondary); color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">Se connecter</a>
-        <p style="margin-top: 20px; color: #6b7280;">Pas encore de compte ? <a href="inscription.html" style="color: var(--secondary); font-weight: 600;">S'inscrire</a></p>
+    <div class="container" style="padding: 80px 20px;">
+      <!-- Hero accueillant -->
+      <div style="text-align: center; margin-bottom: 60px;">
+        <h1 style="color: var(--primary); font-size: 2.5em; margin-bottom: 15px;">📢 Publie ta demande sur Marronner</h1>
+        <p style="color: #6b7280; font-size: 1.2em; max-width: 700px; margin: 0 auto;">Trouve le bon Marronneur pour ton projet en quelques clics. Décris ton besoin, reçois des propositions personnalisées !</p>
+      </div>
+
+      <!-- Aperçu du processus -->
+      <div style="max-width: 900px; margin: 0 auto 50px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 50px;">
+          <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 15px rgba(0,0,0,0.08); text-align: center;">
+            <div style="font-size: 3em; margin-bottom: 15px;">✍️</div>
+            <h3 style="color: var(--primary); margin-bottom: 10px;">1. Décris ton projet</h3>
+            <p style="color: #6b7280;">Catégorie, budget, délais... Donne tous les détails importants</p>
+          </div>
+          <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 15px rgba(0,0,0,0.08); text-align: center;">
+            <div style="font-size: 3em; margin-bottom: 15px;">💼</div>
+            <h3 style="color: var(--primary); margin-bottom: 10px;">2. Reçois des propositions</h3>
+            <p style="color: #6b7280;">Les Marronneurs qualifiés te contactent avec leurs offres</p>
+          </div>
+          <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 15px rgba(0,0,0,0.08); text-align: center;">
+            <div style="font-size: 3em; margin-bottom: 15px;">🎯</div>
+            <h3 style="color: var(--primary); margin-bottom: 10px;">3. Choisis le meilleur</h3>
+            <p style="color: #6b7280;">Compare profils et tarifs, puis lance ton projet !</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Aperçu formulaire -->
+      <div style="max-width: 800px; margin: 0 auto 50px; background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); position: relative;">
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(3px); border-radius: 16px; display: flex; align-items: center; justify-content: center; z-index: 10;">
+          <div style="text-align: center; padding: 40px;">
+            <div style="font-size: 3.5em; margin-bottom: 20px;">🔓</div>
+            <h2 style="color: var(--primary); margin-bottom: 15px; font-size: 1.8em;">Connecte-toi pour publier</h2>
+            <p style="color: #6b7280; margin-bottom: 30px; font-size: 1.1em;">Accède au formulaire complet et commence à recevoir des propositions</p>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+              <a href="#" class="cta auth-link-modal" data-modal="login" style="display: inline-block; padding: 14px 32px; background: var(--secondary); color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">Se connecter</a>
+              <a href="#" class="cta auth-link-modal" data-modal="signup" style="display: inline-block; padding: 14px 32px; background: var(--primary); color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">S'inscrire gratuitement</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Aperçu du formulaire (flouté) -->
+        <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.3em;">📋 Formulaire de publication</h3>
+        <div style="opacity: 0.4; pointer-events: none;">
+          <div style="margin-bottom: 20px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px;">Catégorie du projet</label>
+            <div style="padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb;">🎨 Graphisme & Design</div>
+          </div>
+          <div style="margin-bottom: 20px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px;">Titre de ta demande</label>
+            <div style="padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb;">Ex: Création d'un logo pour mon entreprise</div>
+          </div>
+          <div style="margin-bottom: 20px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px;">Description détaillée</label>
+            <div style="padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb; height: 80px;">Décris ton projet en détail...</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div>
+              <label style="display: block; font-weight: 600; margin-bottom: 8px;">Budget estimé</label>
+              <div style="padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb;">50-100€</div>
+            </div>
+            <div>
+              <label style="display: block; font-weight: 600; margin-bottom: 8px;">Délai souhaité</label>
+              <div style="padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb;">1 semaine</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pourquoi Marronner -->
+      <div style="max-width: 800px; margin: 0 auto; text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; border-radius: 16px; color: white;">
+        <h3 style="font-size: 1.5em; margin-bottom: 15px;">🌴 Pourquoi choisir Marronner ?</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 30px;">
+          <div>
+            <div style="font-size: 2em; margin-bottom: 10px;">🇷🇪</div>
+            <strong>100% Local</strong><br>
+            <small>Talents de La Réunion</small>
+          </div>
+          <div>
+            <div style="font-size: 2em; margin-bottom: 10px;">⚡</div>
+            <strong>Réponses rapides</strong><br>
+            <small>Sous 24-48h</small>
+          </div>
+          <div>
+            <div style="font-size: 2em; margin-bottom: 10px;">💯</div>
+            <strong>Profils vérifiés</strong><br>
+            <small>Avis authentiques</small>
+          </div>
+          <div>
+            <div style="font-size: 2em; margin-bottom: 10px;">🎯</div>
+            <strong>Gratuit</strong><br>
+            <small>Publication sans frais</small>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -244,5 +332,32 @@
   <script src="js/main.js"></script>
   <script src="js/message-widget.js"></script>
   <script src="js/chatbot.js"></script>
+  
+  <!-- Gestion des modales d'authentification -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Attendre que les modales soient chargées par main.js
+      setTimeout(() => {
+        const authLinks = document.querySelectorAll('.auth-link-modal');
+        const signupModal = document.getElementById('signupModal');
+        const loginModal = document.getElementById('loginModal');
+        
+        authLinks.forEach(link => {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const modalType = link.getAttribute('data-modal');
+            
+            if (modalType === 'signup' && signupModal) {
+              signupModal.classList.add('active');
+              document.body.style.overflow = 'hidden';
+            } else if (modalType === 'login' && loginModal) {
+              loginModal.classList.add('active');
+              document.body.style.overflow = 'hidden';
+            }
+          });
+        });
+      }, 500);
+    });
+  </script>
 </body>
 </html>
