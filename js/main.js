@@ -396,6 +396,98 @@ function initializeAuthModals() {
   } else {
     console.error('❌ Formulaire signupFormStep2 non trouvé !');
   }
+  
+  // ============================================
+  // HANDLER FORMULAIRE CONNEXION
+  // ============================================
+  
+  const loginForm = document.getElementById('loginForm');
+  if (loginForm) {
+    console.log('✅ Formulaire connexion trouvé, ajout du listener');
+    
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      console.log('📝 Soumission formulaire connexion');
+      
+      // Récupérer les valeurs
+      const emailInput = loginForm.querySelector('input[type="email"]');
+      const passwordInput = loginForm.querySelector('input[type="password"]');
+      
+      if (!emailInput || !passwordInput) {
+        showToast('error', 'Erreur', 'Impossible de trouver les champs du formulaire.');
+        return;
+      }
+      
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      
+      if (!email || !password) {
+        showToast('error', 'Champs manquants', 'Merci de remplir tous les champs.');
+        return;
+      }
+      
+      console.log('🔍 Tentative de connexion:', email);
+      
+      // Afficher un loader
+      const submitBtn = loginForm.querySelector('.submit-btn');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = '⏳ Connexion...';
+      submitBtn.disabled = true;
+      
+      try {
+        // Vérifier que signInWithEmail est défini
+        if (typeof signInWithEmail === 'undefined') {
+          console.error('❌ signInWithEmail non défini !');
+          showToast('error', 'Erreur technique', 'Le système d\'authentification n\'est pas chargé. Rechargez la page.');
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+          return;
+        }
+        
+        // Se connecter avec Supabase
+        const result = await signInWithEmail(email, password);
+        
+        console.log('📥 Résultat connexion:', result);
+        
+        if (result.success) {
+          console.log('🎉 Connexion réussie !');
+          showToast('success', 'Connexion réussie !', 'Bienvenue sur Marronner 👋');
+          
+          // Fermer la modale
+          closeModal(loginModal);
+          
+          // Recharger la page après 1 seconde
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        } else {
+          console.error('❌ Erreur:', result.error);
+          showToast('error', 'Connexion échouée', result.error || 'Email ou mot de passe incorrect.');
+          
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+        }
+      } catch (error) {
+        console.error('❌ Exception:', error);
+        
+        let errorTitle = 'Erreur';
+        let errorMsg = 'Une erreur est survenue';
+        if (error.message && (error.message.includes('fetch') || error.message.includes('Network'))) {
+          errorTitle = 'Problème de connexion';
+          errorMsg = 'Impossible de contacter le serveur. Vérifiez votre connexion internet et réessayez.';
+        } else if (error.message) {
+          errorMsg = error.message;
+        }
+        
+        showToast('error', errorTitle, errorMsg);
+        
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  } else {
+    console.error('❌ Formulaire loginForm non trouvé !');
+  }
 }
 
 // --- Chargement dynamique des modales d'authentification ---
