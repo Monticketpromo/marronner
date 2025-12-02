@@ -107,6 +107,28 @@ async function signInWithEmail(email, password) {
   }
 }
 
+// Réinitialisation du mot de passe
+async function resetPassword(email) {
+  try {
+    console.log('🔄 Demande de réinitialisation mot de passe...', email);
+    
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: 'https://marronner.re/reset-password.html'
+    });
+
+    if (error) {
+      console.error('❌ Erreur réinitialisation:', error);
+      throw error;
+    }
+    
+    console.log('✅ Email de réinitialisation envoyé');
+    return { success: true };
+  } catch (error) {
+    console.error('❌ Erreur réinitialisation:', error);
+    return { success: false, error: error.message };
+  }
+}
+
 // Connexion avec Google
 async function signInWithGoogle() {
   try {

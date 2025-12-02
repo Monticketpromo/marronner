@@ -1,5 +1,5 @@
 console.log("Marronner – site chargé avec succès !");
-console.log("🔧 Version: 2.12.2024-21:05 - Belles notifications Toast");
+console.log("🔧 Version: 2.12.2024-21:20 - Mot de passe oublié + templates emails");
 
 // ============================================
 // SYSTÈME DE NOTIFICATIONS TOAST
@@ -163,6 +163,51 @@ function initializeAuthModals() {
       openModal(signupModal);
     });
   });
+  
+  // Gérer le clic sur "Mot de passe oublié"
+  const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+  if (forgotPasswordLink) {
+    forgotPasswordLink.addEventListener('click', async (e) => {
+      e.preventDefault();
+      
+      const emailInput = loginModal.querySelector('input[type="email"]');
+      const email = emailInput?.value.trim();
+      
+      if (!email) {
+        showToast('error', 'Email manquant', 'Veuillez entrer votre adresse email avant de cliquer sur "Mot de passe oublié".');
+        emailInput?.focus();
+        return;
+      }
+      
+      // Vérifier le format email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showToast('error', 'Email invalide', 'Veuillez entrer une adresse email valide.');
+        return;
+      }
+      
+      // Désactiver le lien pendant l'envoi
+      forgotPasswordLink.style.pointerEvents = 'none';
+      forgotPasswordLink.textContent = '⏳ Envoi en cours...';
+      
+      try {
+        const result = await resetPassword(email);
+        
+        if (result.success) {
+          showToast('success', 'Email envoyé !', `Un lien de réinitialisation a été envoyé à ${email}. Vérifiez votre boîte mail.`);
+          closeModal(loginModal);
+        } else {
+          showToast('error', 'Erreur', result.error || 'Impossible d\'envoyer l\'email. Réessayez plus tard.');
+        }
+      } catch (error) {
+        showToast('error', 'Erreur', 'Une erreur est survenue. Veuillez réessayer.');
+      } finally {
+        forgotPasswordLink.style.pointerEvents = 'auto';
+        forgotPasswordLink.textContent = 'Mot de passe oublié ?';
+      }
+    });
+  }
+
   
   // ============================================
   // VALIDATION EN TEMPS RÉEL DU MOT DE PASSE
@@ -549,7 +594,7 @@ function initializeAuthModals() {
         <button type="submit" class="submit-btn">Se connecter</button>
         
         <p class="terms">
-          <a href="#">Mot de passe oublié ?</a>
+          <a href="#" id="forgotPasswordLink" style="color: #2563EB; text-decoration: none; font-weight: 500;">Mot de passe oublié ?</a>
         </p>
       </form>
       
