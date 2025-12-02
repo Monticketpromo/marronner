@@ -1451,3 +1451,115 @@ body.auth-ready .auth-link {
     font-size: 1.6em;
   }
 }
+
+/* ============================================
+   NOTIFICATIONS TOAST
+   ============================================ */
+.toast-notification {
+  position: fixed;
+  top: 100px;
+  right: 30px;
+  min-width: 350px;
+  max-width: 450px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+  padding: 20px 25px;
+  z-index: 10000;
+  animation: slideInRight 0.4s ease-out;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(450px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.toast-notification.hiding {
+  animation: slideOutRight 0.3s ease-in forwards;
+}
+
+@keyframes slideOutRight {
+  to {
+    transform: translateX(450px);
+    opacity: 0;
+  }
+}
+
+.toast-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.toast-content {
+  flex: 1;
+}
+
+.toast-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 6px 0;
+  color: var(--dark);
+}
+
+.toast-message {
+  font-size: 14px;
+  color: #6B7280;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #9CA3AF;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.toast-close:hover {
+  background: #F3F4F6;
+  color: var(--dark);
+}
+
+/* Types de toast */
+.toast-success .toast-icon { color: #10B981; }
+.toast-success .toast-title { color: #059669; }
+.toast-success { border-left: 4px solid #10B981; }
+
+.toast-error .toast-icon { color: #EF4444; }
+.toast-error .toast-title { color: #DC2626; }
+.toast-error { border-left: 4px solid #EF4444; }
+
+.toast-info .toast-icon { color: #3B82F6; }
+.toast-info .toast-title { color: #2563EB; }
+.toast-info { border-left: 4px solid #3B82F6; }
+
+/* Responsive toast */
+@media (max-width: 768px) {
+  .toast-notification {
+    right: 15px;
+    left: 15px;
+    min-width: unset;
+    max-width: unset;
+    top: 80px;
+  }
+}
