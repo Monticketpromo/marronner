@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarifs Marronneurs – Marronner</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/chatbot.css">
+  <link rel="icon" href="img/favicon.png">
+  <style>
+    .pricing-hero-marronneur {
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      color: white;
+      text-align: center;
+      padding: 100px 20px 60px;
+      margin-top: 70px;
+    }
+
+    .pricing-hero-marronneur h1 {
+      font-size: 2.8em;
+      margin-bottom: 15px;
+    }
+
+    .pricing-hero-marronneur .subtitle {
+      font-size: 1.3em;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .pricing-content-marronneur {
+      max-width: 1200px;
+      margin: -40px auto 60px;
+      padding: 0 20px;
+    }
+
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+      margin-bottom: 60px;
+    }
+
+    .plan-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .plan-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+    }
+
+    .plan-card.featured {
+      border: 3px solid #7c3aed;
+      transform: scale(1.05);
+    }
+
+    .plan-card.featured::before {
+      height: 8px;
+    }
+
+    .plan-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.85em;
+      font-weight: 600;
+    }
+
+    .plan-card h2 {
+      font-size: 2em;
+      color: #7c3aed;
+      margin: 0 0 10px 0;
+    }
+
+    .plan-commission {
+      font-size: 3.5em;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 20px 0;
+    }
+
+    .plan-commission span {
+      font-size: 0.4em;
+      color: #64748b;
+      font-weight: 400;
+    }
+
+    .plan-price {
+      font-size: 1.8em;
+      color: #64748b;
+      margin-bottom: 20px;
+    }
+
+    .plan-description {
+      color: #64748b;
+      margin-bottom: 30px;
+      font-size: 1.05em;
+    }
+
+    .plan-features {
+      list-style: none;
+      padding: 0;
+      margin: 30px 0;
+    }
+
+    .plan-features li {
+      padding: 12px 0;
+      padding-left: 35px;
+      position: relative;
+      color: #1e293b;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .plan-features li:last-child {
+      border-bottom: none;
+    }
+
+    .plan-features li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #10b981;
+      font-weight: 700;
+      font-size: 1.3em;
+    }
+
+    .plan-cta {
+      display: block;
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      color: white;
+      text-align: center;
+      border-radius: 12px;
+      font-size: 1.1em;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .plan-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
+    }
+
+    .plan-cta.secondary {
+      background: white;
+      color: #7c3aed;
+      border: 2px solid #7c3aed;
+    }
+
+    .comparison-section {
+      background: white;
+      border-radius: 20px;
+      padding: 50px;
+      margin: 60px 0;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .comparison-section h2 {
+      text-align: center;
+      font-size: 2.2em;
+      color: #7c3aed;
+      margin-bottom: 40px;
+    }
+
+    .comparison-calculator {
+      background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+      border-radius: 15px;
+      padding: 40px;
+      margin-bottom: 40px;
+    }
+
+    .slider-container {
+      margin: 30px 0;
+    }
+
+    .slider-container label {
+      display: block;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 15px;
+      font-size: 1.1em;
+    }
+
+    .revenue-display {
+      font-size: 2.5em;
+      font-weight: 700;
+      color: #7c3aed;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 8px;
+      background: #cbd5e1;
+      border-radius: 5px;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .comparison-results {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .result-card {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .result-card h3 {
+      color: #64748b;
+      margin-top: 0;
+      font-size: 1.3em;
+    }
+
+    .result-card .amount {
+      font-size: 2.5em;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 15px 0;
+    }
+
+    .result-card .details {
+      color: #64748b;
+      font-size: 0.95em;
+    }
+
+    .savings-highlight {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      padding: 25px;
+      border-radius: 12px;
+      text-align: center;
+      margin-top: 30px;
+      font-size: 1.3em;
+      font-weight: 600;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin: 40px 0;
+    }
+
+    .option-card {
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 15px;
+      padding: 30px;
+      transition: all 0.3s ease;
+    }
+
+    .option-card:hover {
+      border-color: #7c3aed;
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(124, 58, 237, 0.2);
+    }
+
+    .option-icon {
+      font-size: 3em;
+      margin-bottom: 15px;
+    }
+
+    .option-card h3 {
+      color: #7c3aed;
+      margin: 15px 0;
+      font-size: 1.5em;
+    }
+
+    .option-price {
+      font-size: 2em;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 15px 0;
+    }
+
+    .option-benefits {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0;
+      text-align: left;
+    }
+
+    .option-benefits li {
+      padding: 8px 0;
+      padding-left: 25px;
+      position: relative;
+      color: #64748b;
+      font-size: 0.95em;
+    }
+
+    .option-benefits li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #7c3aed;
+      font-weight: 700;
+      font-size: 1.5em;
+    }
+
+    .packages-section {
+      background: linear-gradient(135deg, #1e293b, #334155);
+      color: white;
+      border-radius: 20px;
+      padding: 60px;
+      margin: 60px 0;
+    }
+
+    .packages-section h2 {
+      text-align: center;
+      font-size: 2.5em;
+      margin-bottom: 50px;
+    }
+
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+
+    .package-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      padding: 35px;
+      transition: all 0.3s ease;
+    }
+
+    .package-card:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: scale(1.05);
+    }
+
+    .package-card.best {
+      border-color: #fbbf24;
+      background: rgba(251, 191, 36, 0.1);
+    }
+
+    .package-name {
+      font-size: 1.8em;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .package-price {
+      font-size: 2.5em;
+      font-weight: 700;
+      margin: 20px 0;
+    }
+
+    .package-savings {
+      background: #10b981;
+      padding: 8px 15px;
+      border-radius: 20px;
+      display: inline-block;
+      font-size: 0.9em;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 968px) {
+      .plans-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .plan-card.featured {
+        transform: scale(1);
+      }
+
+      .comparison-results {
+        grid-template-columns: 1fr;
+      }
+
+      .packages-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="navbar container">
+      <div class="logo"><a href="index.html" style="text-decoration:none;color:inherit;">Marronner</a></div>
+      <button id="burgerMenu" class="burger-menu" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="menu" id="mainMenu">
+        <a href="categories.html">Catégories</a>
+        <a href="publier-demande.html">Publier une demande</a>
+        <a href="demandes.html">Demandes ouvertes</a>
+        <a href="connexion.html" class="auth-link logged-out">Connexion</a>
+        <a href="inscription.html" class="cta auth-link logged-out">S'inscrire</a>
+        <a href="tableau-de-bord.html" class="auth-link logged-in" id="userProfileLink" style="display: none;">👤 <span id="userTypeDisplay">Profil</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="pricing-hero-marronneur">
+    <h1>⚡ Tarifs Marronneurs</h1>
+    <p class="subtitle">Plus attractif que Fiverr. Plus de liberté. 100% local.</p>
+    <p>Choisis le plan qui correspond à ton ambition</p>
+  </div>
+
+  <!-- CONTENU -->
+  <div class="pricing-content-marronneur">
+    
+    <!-- Plans principaux -->
+    <div class="plans-grid">
+      <!-- Standard -->
+      <div class="plan-card">
+        <h2>Standard</h2>
+        <div class="plan-commission">20<span>% de commission</span></div>
+        <div class="plan-price">Gratuit</div>
+        <p class="plan-description">Parfait pour démarrer et tester la plateforme sans engagement</p>
+        
+        <ul class="plan-features">
+          <li>Accès à toutes les demandes</li>
+          <li>Profil public complet</li>
+          <li>Portfolio (5 projets max)</li>
+          <li>Messagerie intégrée</li>
+          <li>Paiements sécurisés</li>
+          <li>Support standard par email</li>
+          <li>Notifications des nouvelles demandes</li>
+        </ul>
+
+        <a href="inscription.html" class="plan-cta secondary">Commencer gratuitement</a>
+      </div>
+
+      <!-- Marronner Plus -->
+      <div class="plan-card featured">
+        <div class="plan-badge">⭐ Recommandé</div>
+        <h2>Marronner Plus</h2>
+        <div class="plan-commission">15<span>% de commission</span></div>
+        <div class="plan-price">29€/mois <small style="font-size: 0.6em;">ou 290€/an</small></div>
+        <p class="plan-description">Plus attractif que Fiverr Pro ! Gagne plus, booste ta visibilité</p>
+        
+        <ul class="plan-features">
+          <li><strong>Commission réduite à 15%</strong></li>
+          <li><strong>Badge Premium visible</strong></li>
+          <li><strong>Mise en avant dans les résultats</strong></li>
+          <li>Portfolio étendu (20 projets)</li>
+          <li>Statistiques avancées</li>
+          <li>Réponse prioritaire aux demandes</li>
+          <li>Support prioritaire 24/7</li>
+          <li>Certification de compétences</li>
+          <li>Outils de facturation avancés</li>
+          <li>Formation continue gratuite</li>
+        </ul>
+
+        <a href="inscription.html" class="plan-cta">Passer à Marronner Plus</a>
+        <p style="text-align: center; margin-top: 15px; color: #64748b; font-size: 0.9em;">
+          💡 Rentable dès 580€/mois de CA
+        </p>
+      </div>
+    </div>
+
+    <!-- Comparateur -->
+    <div class="comparison-section">
+      <h2>🧮 Combien tu vas gagner ?</h2>
+      
+      <div class="comparison-calculator">
+        <div class="slider-container">
+          <label for="revenueSlider">Ton chiffre d'affaires mensuel estimé :</label>
+          <div class="revenue-display" id="revenueDisplay">1000€</div>
+          <input type="range" id="revenueSlider" min="100" max="5000" step="50" value="1000">
+          <div style="display: flex; justify-content: space-between; color: #64748b; font-size: 0.9em; margin-top: 10px;">
+            <span>100€</span>
+            <span>5000€</span>
+          </div>
+        </div>
+
+        <div class="comparison-results">
+          <div class="result-card">
+            <h3>Compte Standard (20%)</h3>
+            <div class="amount" id="standardNet">800€</div>
+            <div class="details">
+              Commission: <strong id="standardCommission">200€</strong><br>
+              Tu reçois: <strong id="standardNetFinal">800€</strong>
+            </div>
+          </div>
+
+          <div class="result-card" style="border: 3px solid #7c3aed;">
+            <h3>Marronner Plus (15%)</h3>
+            <div class="amount" id="proNet">821€</div>
+            <div class="details">
+              Commission: <strong id="proCommission">150€</strong><br>
+              Abonnement: <strong>29€</strong><br>
+              Tu reçois: <strong id="proNetFinal">821€</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="savings-highlight" id="savingsDisplay">
+          💰 Avec Marronner Plus, tu gagnes 21€ de plus par mois !
+        </div>
+
+        <p style="text-align: center; margin-top: 20px; color: #64748b;">
+          <strong>Point mort :</strong> 580€/mois de CA • 
+          <strong>Économie annuelle :</strong> <span id="annualSavings">252€</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Options individuelles -->
+    <div class="comparison-section">
+      <h2>🚀 Options pour booster ta visibilité</h2>
+      <p style="text-align: center; color: #64748b; margin-bottom: 40px; font-size: 1.1em;">
+        Disponibles pour tous les marronneurs (Standard et Plus)
+      </p>
+
+      <div class="options-grid">
+        <div class="option-card">
+          <div class="option-icon">⭐</div>
+          <h3>Mise en avant</h3>
+          <div class="option-price">5€<span style="font-size: 0.5em;">/jour</span></div>
+          <p>25€/semaine • 80€/mois</p>
+          <ul class="option-benefits">
+            <li>En tête des résultats</li>
+            <li>+300% de visibilité</li>
+            <li>Badge "Mis en avant"</li>
+            <li>Notif aux chercheurs</li>
+          </ul>
+          <button class="plan-cta" onclick="alert('Fonctionnalité bientôt disponible')">Activer</button>
+        </div>
+
+        <div class="option-card">
+          <div class="option-icon">🏆</div>
+          <h3>Badge Premium</h3>
+          <div class="option-price">15€<span style="font-size: 0.5em;">/mois</span></div>
+          <p style="opacity: 0;">-</p>
+          <ul class="option-benefits">
+            <li>Badge doré sur profil</li>
+            <li>Marque de confiance</li>
+            <li>+50% de crédibilité</li>
+            <li>Filtrage "Premium"</li>
+          </ul>
+          <button class="plan-cta" onclick="alert('Fonctionnalité bientôt disponible')">Activer</button>
+        </div>
+
+        <div class="option-card">
+          <div class="option-icon">⚡</div>
+          <h3>Réponse urgente</h3>
+          <div class="option-price">3€<span style="font-size: 0.5em;">/réponse</span></div>
+          <p style="opacity: 0;">-</p>
+          <ul class="option-benefits">
+            <li>Proposition en premier</li>
+            <li>Badge "Rapide"</li>
+            <li>Notif push chercheur</li>
+            <li>+80% de conversion</li>
+          </ul>
+          <button class="plan-cta" onclick="alert('Fonctionnalité bientôt disponible')">Activer</button>
+        </div>
+
+        <div class="option-card">
+          <div class="option-icon">🎨</div>
+          <h3>Portfolio étendu</h3>
+          <div class="option-price">10€<span style="font-size: 0.5em;">/mois</span></div>
+          <p style="opacity: 0;">-</p>
+          <ul class="option-benefits">
+            <li>50 projets max</li>
+            <li>Galerie illimitée</li>
+            <li>Vidéos présentation</li>
+            <li>Témoignages clients</li>
+          </ul>
+          <button class="plan-cta" onclick="alert('Fonctionnalité bientôt disponible')">Activer</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Packs combinés -->
+    <div class="packages-section">
+      <h2>📦 Packs tout-en-un</h2>
+      <p style="text-align: center; opacity: 0.9; margin-bottom: 40px; font-size: 1.1em;">
+        Combine plusieurs options et économise jusqu'à 85€/mois
+      </p>
+
+      <div class="packages-grid">
+        <div class="package-card">
+          <div class="package-name">Pack Starter</div>
+          <div class="package-price">49€<span style="font-size: 0.4em;">/mois</span></div>
+          <div class="package-savings">Économie: 10€</div>
+          <p>Badge Premium + Portfolio étendu</p>
+          <ul class="plan-features" style="color: white;">
+            <li>Badge Premium</li>
+            <li>Portfolio 50 projets</li>
+            <li>Idéal pour débuter</li>
+          </ul>
+          <button class="plan-cta" style="background: white; color: #1e293b;" onclick="alert('Fonctionnalité bientôt disponible')">Souscrire</button>
+        </div>
+
+        <div class="package-card best">
+          <div class="package-name">Pack Growth 🔥</div>
+          <div class="package-price">99€<span style="font-size: 0.4em;">/mois</span></div>
+          <div class="package-savings">Économie: 35€</div>
+          <p><strong>Meilleur rapport qualité-prix</strong></p>
+          <ul class="plan-features" style="color: white;">
+            <li>Commission 15%</li>
+            <li>Badge Premium</li>
+            <li>Portfolio étendu</li>
+            <li>Pour se développer</li>
+          </ul>
+          <button class="plan-cta" style="background: #fbbf24; color: #1e293b;" onclick="alert('Fonctionnalité bientôt disponible')">Souscrire</button>
+        </div>
+
+        <div class="package-card">
+          <div class="package-name">Pack Elite</div>
+          <div class="package-price">179€<span style="font-size: 0.4em;">/mois</span></div>
+          <div class="package-savings">Économie: 85€</div>
+          <p>Tout inclus + exclusivités</p>
+          <ul class="plan-features" style="color: white;">
+            <li>Commission 15%</li>
+            <li>Mise en avant permanente</li>
+            <li>Toutes les options</li>
+            <li>Manager de compte</li>
+            <li>Accès demandes VIP</li>
+          </ul>
+          <button class="plan-cta" style="background: white; color: #1e293b;" onclick="alert('Fonctionnalité bientôt disponible')">Souscrire</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ rapide -->
+    <div class="comparison-section">
+      <h2>❓ Questions fréquentes</h2>
+      
+      <div style="display: grid; gap: 20px;">
+        <details style="background: #f8fafc; padding: 20px; border-radius: 10px;">
+          <summary style="font-weight: 600; cursor: pointer; color: #7c3aed;">Pourquoi Marronner Plus est plus attractif que Fiverr ?</summary>
+          <p style="margin: 15px 0 0 0; color: #64748b;">
+            Fiverr Pro prend 20% de commission même pour les pros. Marronner Plus te propose seulement 15% + des avantages exclusifs (badge, visibilité, support) pour 29€/mois. Rentable dès 580€/mois de CA !
+          </p>
+        </details>
+
+        <details style="background: #f8fafc; padding: 20px; border-radius: 10px;">
+          <summary style="font-weight: 600; cursor: pointer; color: #7c3aed;">Puis-je changer de plan à tout moment ?</summary>
+          <p style="margin: 15px 0 0 0; color: #64748b;">
+            Oui ! Tu peux passer de Standard à Plus (ou l'inverse) à tout moment depuis ton tableau de bord. Sans engagement, tu peux annuler quand tu veux.
+          </p>
+        </details>
+
+        <details style="background: #f8fafc; padding: 20px; border-radius: 10px;">
+          <summary style="font-weight: 600; cursor: pointer; color: #7c3aed;">Comment fonctionne le paiement de la commission ?</summary>
+          <p style="margin: 15px 0 0 0; color: #64748b;">
+            La commission est automatiquement déduite quand le chercheur valide le travail. Tu reçois ton paiement net directement sur ton compte. Exemple : vente de 100€ → tu reçois 80€ (Standard) ou 85€ (Plus).
+          </p>
+        </details>
+
+        <details style="background: #f8fafc; padding: 20px; border-radius: 10px;">
+          <summary style="font-weight: 600; cursor: pointer; color: #7c3aed;">Les options sont-elles obligatoires ?</summary>
+          <p style="margin: 15px 0 0 0; color: #64748b;">
+            Non, aucune option n'est obligatoire. Tu peux réussir avec le compte Standard gratuit. Les options sont là pour booster ta croissance si tu veux accélérer.
+          </p>
+        </details>
+      </div>
+    </div>
+
+    <!-- CTA final -->
+    <div style="text-align: center; background: linear-gradient(135deg, #7c3aed, #a855f7); color: white; padding: 60px 40px; border-radius: 20px;">
+      <h2 style="font-size: 2.5em; margin-top: 0;">🚀 Prêt à gagner ta vie localement ?</h2>
+      <p style="font-size: 1.2em; margin: 20px 0 40px;">
+        Rejoins des centaines de marronneurs qui font déjà confiance à la plateforme
+      </p>
+      <a href="inscription.html" class="plan-cta" style="display: inline-block; width: auto; padding: 20px 50px; background: white; color: #7c3aed;">
+        Devenir marronneur gratuitement
+      </a>
+      <p style="margin-top: 20px; opacity: 0.9;">
+        Inscription en 2 min • Aucune carte bancaire • Support inclus
+      </p>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-column">
+        <h3>Marronner</h3>
+        <p>La plateforme 100 % locale qui connecte talents et besoins à La Réunion <img src="img/logo.jpg" alt="La Réunion" class="logo-inline">.<br>
+        Trouve, propose et collabore en toute simplicité.</p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="comment-ca-marche.html">Comment ça marche</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="categories.html">Catégories</a></li>
+          <li><a href="demandes.html">Dernières demandes</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Pour les chercheurs</h4>
+        <ul>
+          <li><a href="publier-demande.html">Publier une demande</a></li>
+          <li><a href="tarification.html">Tarification</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Pour les marronneurs</h4>
+        <ul>
+          <li><a href="devenir-freelance.html">Devenir marronneur</a></li>
+          <li><a href="tarifs-marronneurs.html">Nos tarifs</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Légal</h4>
+        <ul>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+          <li><a href="confidentialite.html">Confidentialité</a></li>
+          <li><a href="cgu.html">CGU</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 Marronner – Tous droits réservés.</p>
+      <p>Fait avec ❤️ à La Réunion <img src="img/logo.jpg" alt="La Réunion" class="logo-inline"></p>
+    </div>
+  </footer>
+
+  <!-- CHATBOT IA -->
+  <button id="chatbotButton" aria-label="Assistant virtuel">💬</button>
+  
+  <div id="chatbotPanel">
+    <div class="chatbot-header">
+      <h3>Assistant Marronner</h3>
+      <button id="chatbotClose" aria-label="Fermer">×</button>
+    </div>
+    
+    <div id="chatbotMessages"></div>
+    
+    <div id="chatbotSuggestions"></div>
+    
+    <div class="chatbot-input-area">
+      <input type="text" id="chatbotInput" placeholder="Pose ta question...">
+      <button id="chatbotSend" aria-label="Envoyer">➤</button>
+    </div>
+  </div>
+
+  <script src="js/supabase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/marronneur-pricing.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/message-widget.js"></script>
+  <script src="js/chatbot.js"></script>
+
+  <script>
+    // Calculateur temps réel
+    const slider = document.getElementById('revenueSlider');
+    const revenueDisplay = document.getElementById('revenueDisplay');
+
+    function updateComparison() {
+      const revenue = parseInt(slider.value);
+      revenueDisplay.textContent = revenue + '€';
+
+      const comparison = compareStandardVsPro(revenue);
+
+      // Standard
+      document.getElementById('standardCommission').textContent = comparison.standard.commission.toFixed(2) + '€';
+      document.getElementById('standardNetFinal').textContent = comparison.standard.net.toFixed(2) + '€';
+      document.getElementById('standardNet').textContent = comparison.standard.net.toFixed(0) + '€';
+
+      // Pro
+      document.getElementById('proCommission').textContent = comparison.pro.commission.toFixed(2) + '€';
+      document.getElementById('proNetFinal').textContent = comparison.pro.net.toFixed(2) + '€';
+      document.getElementById('proNet').textContent = comparison.pro.net.toFixed(0) + '€';
+
+      // Savings
+      const savingsDiv = document.getElementById('savingsDisplay');
+      if (comparison.worthIt) {
+        savingsDiv.innerHTML = `💰 Avec Marronner Plus, tu gagnes <strong>${Math.abs(comparison.savings).toFixed(2)}€ de plus</strong> par mois !`;
+        savingsDiv.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+      } else {
+        savingsDiv.innerHTML = `⚠️ Avec ${revenue}€/mois de CA, reste sur Standard. Passe à Plus à partir de <strong>580€/mois</strong>.`;
+        savingsDiv.style.background = 'linear-gradient(135deg, #f59e0b, #d97706)';
+      }
+
+      // Annual savings
+      const annualSavings = comparison.worthIt ? (comparison.savings * 12).toFixed(0) : 0;
+      document.getElementById('annualSavings').textContent = annualSavings + '€';
+    }
+
+    slider.addEventListener('input', updateComparison);
+    updateComparison();
+  </script>
+</body>
+</html>
