@@ -2,18 +2,29 @@ console.log("Marronner – site chargé avec succès !");
 
 // --- Chargement dynamique des modales d'authentification ---
 document.addEventListener("DOMContentLoaded", () => {
-  fetch('/auth-modals.html')
-    .then(response => response.text())
+  fetch('auth-modals.html')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Erreur chargement modales: ' + response.status);
+      }
+      return response.text();
+    })
     .then(html => {
       // Insère les modales juste avant la fin du body
       const div = document.createElement('div');
       div.innerHTML = html;
       document.body.appendChild(div);
       
+      console.log('✅ Modales chargées');
+      
       // Initialise les fonctionnalités des modales après chargement
       initializeAuthModals();
     })
-    .catch(error => console.error('Erreur chargement modales:', error));
+    .catch(error => {
+      console.error('❌ Erreur chargement modales:', error);
+      // Fallback: essayer de continuer quand même
+      setTimeout(() => initializeAuthModals(), 100);
+    });
 });
 
 // --- Animation d'apparition au scroll ---
@@ -102,9 +113,20 @@ function initializeAuthModals() {
   const signupModal = document.getElementById('signupModal');
   const loginModal = document.getElementById('loginModal');
   
+  console.log('🔍 Initialisation modales:', {
+    signupModal: !!signupModal,
+    loginModal: !!loginModal
+  });
+  
+  if (!signupModal || !loginModal) {
+    console.error('❌ Modales non trouvées dans le DOM');
+    return;
+  }
+  
   // Fonction pour ouvrir un modal
   function openModal(modal) {
     if (modal) {
+      console.log('📂 Ouverture modal:', modal.id);
       modal.classList.add('active');
       document.body.style.overflow = 'hidden';
     }
@@ -113,22 +135,31 @@ function initializeAuthModals() {
   // Fonction pour fermer un modal
   function closeModal(modal) {
     if (modal) {
+      console.log('📁 Fermeture modal:', modal.id);
       modal.classList.remove('active');
       document.body.style.overflow = 'auto';
     }
   }
   
   // Intercepter les clics sur liens "S'inscrire" et "Connexion"
-  document.querySelectorAll('a[href="inscription.html"], a[href*="inscription"]').forEach(link => {
+  const inscriptionLinks = document.querySelectorAll('a[href="inscription.html"], a[href*="inscription"]');
+  console.log('🔗 Liens inscription trouvés:', inscriptionLinks.length);
+  
+  inscriptionLinks.forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
+      console.log('👆 Clic sur lien inscription');
       openModal(signupModal);
     });
   });
   
-  document.querySelectorAll('a[href="connexion.html"], a[href*="connexion"]').forEach(link => {
+  const connexionLinks = document.querySelectorAll('a[href="connexion.html"], a[href*="connexion"]');
+  console.log('🔗 Liens connexion trouvés:', connexionLinks.length);
+  
+  connexionLinks.forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
+      console.log('👆 Clic sur lien connexion');
       openModal(loginModal);
     });
   });
