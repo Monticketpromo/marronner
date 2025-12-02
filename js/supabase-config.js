@@ -66,6 +66,7 @@ async function signUpWithEmail(email, password, firstName, lastName, userType, p
             last_name: lastName,
             user_type: userType,
             phone: phone || null,
+            onboarding_completed: userType === 'chercheur', // Les chercheurs n'ont pas besoin d'onboarding
             created_at: new Date().toISOString()
           }
         ], { onConflict: 'id' });
@@ -236,6 +237,7 @@ async function updateUIForLoggedInUser(user) {
   
   try {
     let userType = 'Profil'; // Valeur par défaut
+    let onboardingCompleted = false;
     
     // D'abord essayer de récupérer depuis les métadonnées utilisateur
     if (user.user_metadata && user.user_metadata.user_type) {
@@ -249,10 +251,20 @@ async function updateUIForLoggedInUser(user) {
       
       if (profileResult.success && profileResult.data) {
         userType = profileResult.data.user_type === 'chercheur' ? 'Chercheur' : 'Marronneur';
+        onboardingCompleted = profileResult.data.onboarding_completed || false;
         console.log('👤 Type utilisateur (depuis base):', userType);
+        console.log('✅ Onboarding complété:', onboardingCompleted);
       } else {
         console.warn('⚠️ Profil non récupéré, utilisation de la valeur par défaut');
       }
+    }
+    
+    // Rediriger vers l'onboarding si marronneur et onboarding non complété
+    const currentPage = window.location.pathname.split('/').pop();
+    if (userType === 'Marronneur' && !onboardingCompleted && currentPage !== 'onboarding.html') {
+      console.log('🚀 Redirection vers onboarding (profil incomplet)');
+      window.location.href = 'onboarding.html';
+      return;
     }
     
     // Mettre à jour le texte du bouton profil
