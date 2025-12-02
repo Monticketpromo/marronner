@@ -500,6 +500,41 @@
       align-items: center;
       justify-content: center;
     }
+    
+    .checkbox-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      border: 2px solid #E5E7EB;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      background: white;
+    }
+    
+    .checkbox-card:hover {
+      border-color: var(--primary);
+      background: #F3F4F6;
+    }
+    
+    .checkbox-card input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+    
+    .checkbox-card input[type="checkbox"]:checked + span {
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .portfolio-link-item-with-title {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
   </style>
 </head>
 <body>
@@ -853,26 +888,40 @@
           <small style="color: #6B7280; font-size: 12px;">Minimum 50 caractères • Plus c'est détaillé, mieux c'est !</small>
         </div>
         
-        <!-- Expérience et compétences sur la même ligne -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-          <div class="form-group">
-            <label for="experience">🎯 Années d'expérience *</label>
-            <select id="experience" name="experience" required class="select-modern">
-              <option value="">Sélectionne...</option>
-              <option value="debutant">🌱 Débutant (moins d'1 an)</option>
-              <option value="1-3">📈 1 à 3 ans</option>
-              <option value="3-5">⭐ 3 à 5 ans</option>
-              <option value="5-10">🏆 5 à 10 ans</option>
-              <option value="10+">👑 Plus de 10 ans</option>
-            </select>
+        <!-- Expérience -->
+        <div class="form-group">
+          <label class="section-label">🎯 Domaines d'expérience *</label>
+          <p style="margin: 0 0 10px 0; font-size: 13px; color: #6B7280;">Coche toutes tes compétences (au moins 1)</p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+            <label class="checkbox-card">
+              <input type="checkbox" value="debutant" onchange="updateExperience()">
+              <span>🌱 Débutant (moins d'1 an)</span>
+            </label>
+            <label class="checkbox-card">
+              <input type="checkbox" value="1-3" onchange="updateExperience()">
+              <span>📈 1 à 3 ans</span>
+            </label>
+            <label class="checkbox-card">
+              <input type="checkbox" value="3-5" onchange="updateExperience()">
+              <span>⭐ 3 à 5 ans</span>
+            </label>
+            <label class="checkbox-card">
+              <input type="checkbox" value="5-10" onchange="updateExperience()">
+              <span>🏆 5 à 10 ans</span>
+            </label>
+            <label class="checkbox-card">
+              <input type="checkbox" value="10+" onchange="updateExperience()">
+              <span>👑 Plus de 10 ans</span>
+            </label>
           </div>
-          
-          <div class="form-group">
-            <label for="competences">💼 Compétences clés *</label>
-            <input type="text" id="competences" name="competences" required class="input-modern"
-                   placeholder="Ex: Photoshop, Illustrator, Figma">
-            <small style="color: #6B7280; font-size: 11px;">Sépare par des virgules</small>
-          </div>
+        </div>
+        
+        <!-- Compétences -->
+        <div class="form-group">
+          <label for="competences">💼 Compétences clés *</label>
+          <input type="text" id="competences" name="competences" required class="input-modern"
+                 placeholder="Ex: Photoshop, Illustrator, Figma, Montage vidéo...">
+          <small style="color: #6B7280; font-size: 11px;">Sépare par des virgules</small>
         </div>
         
         <!-- Portfolio / Projets -->
@@ -885,11 +934,12 @@
           <!-- Liens portfolio -->
           <div style="margin-bottom: 20px;">
             <label style="font-size: 14px; font-weight: 600; color: #374151; display: block; margin-bottom: 8px;">
-              🔗 Liens (Behance, Instagram, site web...)
+              🔗 Liens (avec titre personnalisé)
             </label>
             <div id="portfolioLinks">
-              <div class="portfolio-link-item">
-                <input type="url" class="input-modern portfolio-input" placeholder="https://ton-site.com ou lien Instagram/Behance">
+              <div class="portfolio-link-item-with-title">
+                <input type="text" class="input-modern portfolio-title" placeholder="Ex: Mon site web, Mes montages..." style="flex: 0 0 180px;">
+                <input type="url" class="input-modern portfolio-input" placeholder="https://lien-vers-projet.com">
                 <button type="button" class="btn-remove" onclick="removePortfolioLink(this)" style="display: none;">✕</button>
               </div>
             </div>
@@ -917,20 +967,28 @@
           <label class="section-label">🌐 Réseaux sociaux (optionnel)</label>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
             <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="font-size: 20px;">📷</span>
+              <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" style="width: 24px; height: 24px;">
               <input type="text" id="instagram" class="input-modern" placeholder="@ton_instagram">
             </div>
             <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="font-size: 20px;">👍</span>
+              <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" style="width: 24px; height: 24px;">
               <input type="text" id="facebook" class="input-modern" placeholder="facebook.com/ton-page">
             </div>
             <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="font-size: 20px;">💼</span>
+              <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" style="width: 24px; height: 24px;">
               <input type="text" id="linkedin" class="input-modern" placeholder="linkedin.com/in/ton-profil">
             </div>
             <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="font-size: 20px;">🎵</span>
+              <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="TikTok" style="width: 24px; height: 24px;">
               <input type="text" id="tiktok" class="input-modern" placeholder="@ton_tiktok">
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube" style="width: 24px; height: 24px;">
+              <input type="text" id="youtube" class="input-modern" placeholder="youtube.com/@ton-chaine">
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter/X" style="width: 24px; height: 24px;">
+              <input type="text" id="twitter" class="input-modern" placeholder="@ton_twitter">
             </div>
           </div>
         </div>
@@ -1112,9 +1170,10 @@
     function addPortfolioLink() {
       const container = document.getElementById('portfolioLinks');
       const newItem = document.createElement('div');
-      newItem.className = 'portfolio-link-item';
+      newItem.className = 'portfolio-link-item-with-title';
       newItem.innerHTML = `
-        <input type="url" class="input-modern portfolio-input" placeholder="https://ton-projet.com ou lien social">
+        <input type="text" class="input-modern portfolio-title" placeholder="Ex: Mon site web..." style="flex: 0 0 180px;">
+        <input type="url" class="input-modern portfolio-input" placeholder="https://lien-vers-projet.com">
         <button type="button" class="btn-remove" onclick="removePortfolioLink(this)">✕</button>
       `;
       container.appendChild(newItem);
@@ -1122,13 +1181,20 @@
     
     // Retirer un lien portfolio
     function removePortfolioLink(btn) {
-      btn.closest('.portfolio-link-item').remove();
+      btn.closest('.portfolio-link-item-with-title').remove();
       
       // S'il ne reste qu'un seul champ, cacher son bouton de suppression
-      const items = document.querySelectorAll('.portfolio-link-item');
+      const items = document.querySelectorAll('.portfolio-link-item-with-title');
       if (items.length === 1) {
-        items[0].querySelector('.btn-remove').style.display = 'none';
+        const removeBtn = items[0].querySelector('.btn-remove');
+        if (removeBtn) removeBtn.style.display = 'none';
       }
+    }
+    
+    // Gérer la sélection d'expérience (checkboxes)
+    function updateExperience() {
+      const checkboxes = document.querySelectorAll('.checkbox-card input[type="checkbox"]:checked');
+      onboardingData.experience = Array.from(checkboxes).map(cb => cb.value);
     }
     
     // Gestion de la sélection des catégories
@@ -1159,16 +1225,17 @@
       
       if (stepNumber === 3) {
         const bio = document.getElementById('bio').value;
-        const experience = document.getElementById('experience').value;
         const competences = document.getElementById('competences').value;
         
-        if (!bio || bio.length < 50) {
-          showToast('error', 'Présentation trop courte', 'Écris au moins 50 caractères pour ta bio.');
+        // Vérifier l'expérience (checkboxes)
+        const experienceChecked = document.querySelectorAll('.checkbox-card input[type="checkbox"]:checked');
+        if (experienceChecked.length === 0) {
+          showToast('error', 'Expérience requise', 'Coche au moins un domaine d\'expérience.');
           return;
         }
         
-        if (!experience) {
-          showToast('error', 'Expérience requise', 'Sélectionne ton niveau d\'expérience.');
+        if (!bio || bio.length < 50) {
+          showToast('error', 'Présentation trop courte', 'Écris au moins 50 caractères pour ta bio.');
           return;
         }
         
@@ -1177,12 +1244,17 @@
           return;
         }
         
-        // Récupérer les liens portfolio
-        const portfolioInputs = document.querySelectorAll('.portfolio-input');
+        // Récupérer les liens portfolio avec titres
+        const portfolioItems = document.querySelectorAll('.portfolio-link-item-with-title');
         const links = [];
-        portfolioInputs.forEach(input => {
-          if (input.value.trim()) {
-            links.push(input.value.trim());
+        portfolioItems.forEach(item => {
+          const title = item.querySelector('.portfolio-title').value.trim();
+          const url = item.querySelector('.portfolio-input').value.trim();
+          if (url) {
+            links.push({
+              title: title || 'Projet',
+              url: url
+            });
           }
         });
         
@@ -1191,16 +1263,20 @@
         const facebook = document.getElementById('facebook').value.trim();
         const linkedin = document.getElementById('linkedin').value.trim();
         const tiktok = document.getElementById('tiktok').value.trim();
+        const youtube = document.getElementById('youtube') ? document.getElementById('youtube').value.trim() : '';
+        const twitter = document.getElementById('twitter') ? document.getElementById('twitter').value.trim() : '';
         
         onboardingData.bio = bio;
-        onboardingData.experience = experience;
+        onboardingData.experience = Array.from(experienceChecked).map(cb => cb.value);
         onboardingData.competences = competences;
         onboardingData.portfolioLinks = links;
         onboardingData.socialMedia = {
           instagram: instagram,
           facebook: facebook,
           linkedin: linkedin,
-          tiktok: tiktok
+          tiktok: tiktok,
+          youtube: youtube,
+          twitter: twitter
         };
       }
       
