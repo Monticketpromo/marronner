@@ -451,6 +451,55 @@
       background: #E5E7EB;
       border-color: var(--primary);
     }
+    
+    .btn-upload-portfolio {
+      padding: 12px 24px;
+      background: #10B981;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 14px;
+    }
+    
+    .btn-upload-portfolio:hover {
+      background: #059669;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+    
+    .portfolio-image-preview {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid #E5E7EB;
+    }
+    
+    .portfolio-image-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .portfolio-image-preview .remove-img {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 24px;
+      height: 24px;
+      background: #EF4444;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   </style>
 </head>
 <body>
@@ -779,7 +828,7 @@
         
         <!-- Photo de profil -->
         <div class="profile-photo-section">
-          <label class="section-label">📸 Photo de profil</label>
+          <label class="section-label">📸 Photo de profil *</label>
           <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
             <div class="photo-preview" id="photoPreview">
               <span style="font-size: 48px; color: #9CA3AF;">👤</span>
@@ -790,7 +839,7 @@
                 📷 Choisir une photo
               </button>
               <p style="margin: 8px 0 0 0; font-size: 12px; color: #6B7280;">
-                JPG, PNG max 5MB • <span style="color: #F59E0B; font-weight: 600;">500MB total offre gratuite</span>
+                JPG, PNG max 1MB • Photo de profil
               </p>
             </div>
           </div>
@@ -828,15 +877,39 @@
         
         <!-- Portfolio / Projets -->
         <div class="form-group">
-          <label class="section-label">🎨 Portfolio & Projets (optionnel)</label>
-          <p style="margin: 0 0 10px 0; font-size: 13px; color: #6B7280;">Ajoute des liens vers tes meilleurs travaux</p>
-          <div id="portfolioLinks">
-            <div class="portfolio-link-item">
-              <input type="url" class="input-modern portfolio-input" placeholder="https://ton-site.com ou lien Instagram/Behance">
-              <button type="button" class="btn-remove" onclick="removePortfolioLink(this)" style="display: none;">✕</button>
+          <label class="section-label">🎨 Portfolio & Projets</label>
+          <p style="margin: 0 0 15px 0; font-size: 13px; color: #6B7280;">
+            Ajoute des <strong>liens</strong> vers tes travaux, ou <strong>uploade des images</strong> de tes meilleurs projets
+          </p>
+          
+          <!-- Liens portfolio -->
+          <div style="margin-bottom: 20px;">
+            <label style="font-size: 14px; font-weight: 600; color: #374151; display: block; margin-bottom: 8px;">
+              🔗 Liens (Behance, Instagram, site web...)
+            </label>
+            <div id="portfolioLinks">
+              <div class="portfolio-link-item">
+                <input type="url" class="input-modern portfolio-input" placeholder="https://ton-site.com ou lien Instagram/Behance">
+                <button type="button" class="btn-remove" onclick="removePortfolioLink(this)" style="display: none;">✕</button>
+              </div>
             </div>
+            <button type="button" class="btn-add-link" onclick="addPortfolioLink()">+ Ajouter un lien</button>
           </div>
-          <button type="button" class="btn-add-link" onclick="addPortfolioLink()">+ Ajouter un lien</button>
+          
+          <!-- Upload images portfolio -->
+          <div style="padding: 20px; background: #F9FAFB; border-radius: 12px; border: 2px dashed #D1D5DB;">
+            <label style="font-size: 14px; font-weight: 600; color: #374151; display: block; margin-bottom: 8px;">
+              📁 Images de tes projets
+            </label>
+            <input type="file" id="portfolioImages" accept="image/*" multiple style="display: none;" onchange="previewPortfolioImages(event)">
+            <button type="button" class="btn-upload-portfolio" onclick="document.getElementById('portfolioImages').click()">
+              📤 Upload images
+            </button>
+            <p style="margin: 8px 0 0 0; font-size: 12px; color: #6B7280;">
+              JPG, PNG • Multiple images • <span style="color: #F59E0B; font-weight: 600;">500MB total en offre gratuite</span>
+            </p>
+            <div id="portfolioPreview" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 15px;"></div>
+          </div>
         </div>
         
         <!-- Réseaux sociaux -->
@@ -927,6 +1000,7 @@
       categories: [],
       profilePhotoFile: null,
       profilePhotoUrl: '',
+      portfolioImageFiles: [],
       bio: '',
       experience: '',
       competences: '',
@@ -948,9 +1022,9 @@
       const file = event.target.files[0];
       if (!file) return;
       
-      // Vérifier la taille (5MB max)
-      if (file.size > 5 * 1024 * 1024) {
-        showToast('error', 'Fichier trop lourd', 'La photo doit faire moins de 5MB.');
+      // Vérifier la taille (1MB max pour photo de profil)
+      if (file.size > 1 * 1024 * 1024) {
+        showToast('error', 'Fichier trop lourd', 'La photo de profil doit faire moins de 1MB.');
         return;
       }
       
@@ -969,6 +1043,69 @@
         preview.innerHTML = `<img src="${e.target.result}" alt="Photo de profil">`;
       };
       reader.readAsDataURL(file);
+    }
+    
+    // Prévisualisation images portfolio
+    function previewPortfolioImages(event) {
+      const files = Array.from(event.target.files);
+      if (files.length === 0) return;
+      
+      // Vérifier la taille totale
+      const totalSize = files.reduce((sum, file) => sum + file.size, 0);
+      const currentSize = onboardingData.portfolioImageFiles.reduce((sum, file) => sum + file.size, 0);
+      const totalMB = (totalSize + currentSize) / (1024 * 1024);
+      
+      if (totalMB > 500) {
+        showToast('error', 'Limite dépassée', `Total: ${totalMB.toFixed(0)}MB. Max 500MB en offre gratuite.`);
+        return;
+      }
+      
+      // Ajouter les fichiers
+      files.forEach(file => {
+        if (!file.type.startsWith('image/')) return;
+        
+        onboardingData.portfolioImageFiles.push(file);
+        
+        // Afficher preview
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const preview = document.getElementById('portfolioPreview');
+          const div = document.createElement('div');
+          div.className = 'portfolio-image-preview';
+          div.innerHTML = `
+            <img src="${e.target.result}" alt="Projet">
+            <button class="remove-img" onclick="removePortfolioImage(${onboardingData.portfolioImageFiles.length - 1})">✕</button>
+          `;
+          preview.appendChild(div);
+        };
+        reader.readAsDataURL(file);
+      });
+      
+      const sizeMB = (totalSize + currentSize) / (1024 * 1024);
+      showToast('info', 'Images ajoutées', `${files.length} image(s) • ${sizeMB.toFixed(1)}MB / 500MB`);
+    }
+    
+    // Retirer une image portfolio
+    function removePortfolioImage(index) {
+      onboardingData.portfolioImageFiles.splice(index, 1);
+      
+      // Rafraîchir l'affichage
+      const preview = document.getElementById('portfolioPreview');
+      preview.innerHTML = '';
+      
+      onboardingData.portfolioImageFiles.forEach((file, i) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const div = document.createElement('div');
+          div.className = 'portfolio-image-preview';
+          div.innerHTML = `
+            <img src="${e.target.result}" alt="Projet">
+            <button class="remove-img" onclick="removePortfolioImage(${i})">✕</button>
+          `;
+          preview.appendChild(div);
+        };
+        reader.readAsDataURL(file);
+      });
     }
     
     // Ajouter un lien portfolio
@@ -1121,29 +1258,56 @@
         }
         
         let profilePhotoUrl = '';
+        const portfolioImageUrls = [];
         
         // Upload de la photo de profil si présente
         if (onboardingData.profilePhotoFile) {
-          btn.textContent = '📤 Upload photo...';
+          btn.textContent = '📤 Upload photo profil...';
           
           const fileExt = onboardingData.profilePhotoFile.name.split('.').pop();
-          const fileName = `${user.id}-${Date.now()}.${fileExt}`;
+          const fileName = `${user.id}-profile.${fileExt}`;
           const filePath = `profile-photos/${fileName}`;
           
           const { error: uploadError } = await supabase.storage
             .from('user-content')
-            .upload(filePath, onboardingData.profilePhotoFile);
+            .upload(filePath, onboardingData.profilePhotoFile, { upsert: true });
           
           if (uploadError) {
             console.warn('Erreur upload photo:', uploadError);
-            // On continue quand même sans la photo
           } else {
-            // Obtenir l'URL publique
             const { data: urlData } = supabase.storage
               .from('user-content')
               .getPublicUrl(filePath);
             
             profilePhotoUrl = urlData.publicUrl;
+          }
+        }
+        
+        // Upload des images portfolio si présentes
+        if (onboardingData.portfolioImageFiles.length > 0) {
+          btn.textContent = `📤 Upload projets (0/${onboardingData.portfolioImageFiles.length})...`;
+          
+          for (let i = 0; i < onboardingData.portfolioImageFiles.length; i++) {
+            const file = onboardingData.portfolioImageFiles[i];
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${user.id}-project-${Date.now()}-${i}.${fileExt}`;
+            const filePath = `portfolio/${fileName}`;
+            
+            btn.textContent = `📤 Upload projets (${i + 1}/${onboardingData.portfolioImageFiles.length})...`;
+            
+            const { error: uploadError } = await supabase.storage
+              .from('user-content')
+              .upload(filePath, file);
+            
+            if (uploadError) {
+              console.warn('Erreur upload image portfolio:', uploadError);
+            } else {
+              const { data: urlData } = supabase.storage
+                .from('user-content')
+                .getPublicUrl(filePath);
+              
+              portfolioImageUrls.push(urlData.publicUrl);
+            }
           }
         }
         
@@ -1159,6 +1323,7 @@
             experience: onboardingData.experience,
             competences: onboardingData.competences.split(',').map(c => c.trim()),
             portfolio_links: onboardingData.portfolioLinks,
+            portfolio_images: portfolioImageUrls,
             social_media: onboardingData.socialMedia,
             tarif_horaire: onboardingData.tarifHoraire,
             tarif_minimum: onboardingData.tarifMinimum,
