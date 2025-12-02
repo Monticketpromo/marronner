@@ -1,5 +1,131 @@
 console.log("Marronner – site chargé avec succès !");
-console.log("🔧 Version: 2.12.2024-20:00 - Redirections + modales");
+console.log("🔧 Version: 2.12.2024-20:15 - Fix function order");
+
+// ============================================
+// FONCTIONS POUR MODALES (déclarées en premier)
+// ============================================
+
+// Fonction pour vérifier le hash et ouvrir la modale correspondante
+function checkHashAndOpenModal() {
+  const hash = window.location.hash;
+  console.log('🔍 Hash détecté:', hash);
+  
+  // Attendre que les modales soient dans le DOM
+  setTimeout(() => {
+    const signupModal = document.getElementById('signupModal');
+    const loginModal = document.getElementById('loginModal');
+    
+    console.log('🔍 Modales trouvées:', {
+      signup: !!signupModal,
+      login: !!loginModal
+    });
+    
+    if (hash === '#signup' && signupModal) {
+      console.log('📂 Ouverture modale inscription via hash');
+      signupModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      window.history.replaceState(null, null, ' ');
+    } else if (hash === '#login' && loginModal) {
+      console.log('📂 Ouverture modale connexion via hash');
+      loginModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      window.history.replaceState(null, null, ' ');
+    }
+  }, 100);
+}
+
+// --- Initialisation des modales d'authentification ---
+function initializeAuthModals() {
+  const signupModal = document.getElementById('signupModal');
+  const loginModal = document.getElementById('loginModal');
+  
+  console.log('🔍 Initialisation modales:', {
+    signupModal: !!signupModal,
+    loginModal: !!loginModal
+  });
+  
+  if (!signupModal || !loginModal) {
+    console.error('❌ Modales non trouvées dans le DOM');
+    return;
+  }
+  
+  // Fonction pour ouvrir un modal
+  function openModal(modal) {
+    if (modal) {
+      console.log('📂 Ouverture modal:', modal.id);
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+  
+  // Fonction pour fermer un modal
+  function closeModal(modal) {
+    if (modal) {
+      console.log('📁 Fermeture modal:', modal.id);
+      modal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+  }
+  
+  // Intercepter les clics sur liens "S'inscrire" et "Connexion"
+  const inscriptionLinks = document.querySelectorAll('a[href="inscription.html"], a[href*="inscription"]');
+  console.log('🔗 Liens inscription trouvés:', inscriptionLinks.length);
+  
+  inscriptionLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('👆 Clic sur lien inscription');
+      openModal(signupModal);
+    });
+  });
+  
+  const connexionLinks = document.querySelectorAll('a[href="connexion.html"], a[href*="connexion"]');
+  console.log('🔗 Liens connexion trouvés:', connexionLinks.length);
+  
+  connexionLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('👆 Clic sur lien connexion');
+      openModal(loginModal);
+    });
+  });
+  
+  // Fermer les modaux au clic sur bouton close
+  document.querySelectorAll('.modal-close').forEach(btn => {
+    btn.addEventListener('click', () => {
+      closeModal(signupModal);
+      closeModal(loginModal);
+    });
+  });
+  
+  // Fermer les modaux au clic sur l'overlay
+  [signupModal, loginModal].forEach(modal => {
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeModal(modal);
+        }
+      });
+    }
+  });
+  
+  // Basculer entre inscription et connexion
+  document.querySelectorAll('.switch-to-login').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeModal(signupModal);
+      openModal(loginModal);
+    });
+  });
+  
+  document.querySelectorAll('.switch-to-signup').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeModal(loginModal);
+      openModal(signupModal);
+    });
+  });
+}
 
 // --- Chargement dynamique des modales d'authentification ---
 // Utilise un script pour insérer directement le HTML au lieu de fetch
@@ -236,23 +362,6 @@ console.log("🔧 Version: 2.12.2024-20:00 - Redirections + modales");
   }
 })();
 
-// Fonction pour vérifier le hash et ouvrir la modale correspondante
-function checkHashAndOpenModal() {
-  const hash = window.location.hash;
-  const signupModal = document.getElementById('signupModal');
-  const loginModal = document.getElementById('loginModal');
-  
-  if (hash === '#signup' && signupModal) {
-    signupModal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-    window.history.replaceState(null, null, ' '); // Enlève le hash de l'URL
-  } else if (hash === '#login' && loginModal) {
-    loginModal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-    window.history.replaceState(null, null, ' '); // Enlève le hash de l'URL
-  }
-}
-
 // --- Animation d'apparition au scroll ---
 const scrollObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
@@ -332,100 +441,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ============================================
-  // GESTION MODAUX INSCRIPTION / CONNEXION
+  // GESTION ÉTAPES D'INSCRIPTION
   // ============================================
-// --- Initialisation des modales d'authentification ---
-function initializeAuthModals() {
-  const signupModal = document.getElementById('signupModal');
-  const loginModal = document.getElementById('loginModal');
-  
-  console.log('🔍 Initialisation modales:', {
-    signupModal: !!signupModal,
-    loginModal: !!loginModal
-  });
-  
-  if (!signupModal || !loginModal) {
-    console.error('❌ Modales non trouvées dans le DOM');
-    return;
-  }
-  
-  // Fonction pour ouvrir un modal
-  function openModal(modal) {
-    if (modal) {
-      console.log('📂 Ouverture modal:', modal.id);
-      modal.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-  }
-  
-  // Fonction pour fermer un modal
-  function closeModal(modal) {
-    if (modal) {
-      console.log('📁 Fermeture modal:', modal.id);
-      modal.classList.remove('active');
-      document.body.style.overflow = 'auto';
-    }
-  }
-  
-  // Intercepter les clics sur liens "S'inscrire" et "Connexion"
-  const inscriptionLinks = document.querySelectorAll('a[href="inscription.html"], a[href*="inscription"]');
-  console.log('🔗 Liens inscription trouvés:', inscriptionLinks.length);
-  
-  inscriptionLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      console.log('👆 Clic sur lien inscription');
-      openModal(signupModal);
-    });
-  });
-  
-  const connexionLinks = document.querySelectorAll('a[href="connexion.html"], a[href*="connexion"]');
-  console.log('🔗 Liens connexion trouvés:', connexionLinks.length);
-  
-  connexionLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      console.log('👆 Clic sur lien connexion');
-      openModal(loginModal);
-    });
-  });
-  
-  // Fermer les modaux au clic sur bouton close
-  document.querySelectorAll('.modal-close').forEach(btn => {
-    btn.addEventListener('click', () => {
-      closeModal(signupModal);
-      closeModal(loginModal);
-    });
-  });
-  
-  // Fermer les modaux au clic sur l'overlay
-  [signupModal, loginModal].forEach(modal => {
-    if (modal) {
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          closeModal(modal);
-        }
-      });
-    }
-  });
-  
-  // Basculer entre inscription et connexion
-  document.querySelectorAll('.switch-to-login').forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      closeModal(signupModal);
-      openModal(loginModal);
-    });
-  });
-  
-  document.querySelectorAll('.switch-to-signup').forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      closeModal(loginModal);
-      openModal(signupModal);
-    });
-  });
-}
   // Gestion du bouton "S'inscrire par email"
   const emailSignupBtn = document.getElementById('emailSignupBtn');
   const backToStep1 = document.getElementById('backToStep1');
