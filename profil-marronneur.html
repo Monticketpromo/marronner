@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profil Marronneur – Marronner</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/chatbot.css">
   <link rel="icon" href="img/favicon.png">
   
   <!-- Supabase SDK -->
@@ -515,5 +516,26 @@
       });
     });
   </script>
+
+  <!-- CHATBOT IA -->
+  <button id="chatbotButton" aria-label="Assistant virtuel">💬</button>
+
+  <div id="chatbotPanel">
+    <div class="chatbot-header">
+      <h3>Assistant Marronner</h3>
+      <button id="chatbotClose" aria-label="Fermer">×</button>
+    </div>
+    
+    <div id="chatbotMessages"></div>
+    
+    <div id="chatbotSuggestions"></div>
+    
+    <div class="chatbot-input-area">
+      <input type="text" id="chatbotInput" placeholder="Pose ta question...">
+      <button id="chatbotSend" aria-label="Envoyer">➤</button>
+    </div>
+  </div>
+
+  <script src="js/chatbot.js"></script>
 </body>
 </html>

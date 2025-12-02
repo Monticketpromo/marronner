@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dernières demandes – Marronner</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/chatbot.css">
   <link rel="icon" href="img/favicon.png">
   <style>
     .hero-demandes {
@@ -620,10 +621,31 @@
     });
   </script>
   
+  <!-- CHATBOT IA -->
+  <button id="chatbotButton" aria-label="Assistant virtuel">💬</button>
+
+  <div id="chatbotPanel">
+    <div class="chatbot-header">
+      <h3>Assistant Marronner</h3>
+      <button id="chatbotClose" aria-label="Fermer">×</button>
+    </div>
+    
+    <div id="chatbotMessages"></div>
+    
+    <div id="chatbotSuggestions"></div>
+    
+    <div class="chatbot-input-area">
+      <input type="text" id="chatbotInput" placeholder="Pose ta question...">
+      <button id="chatbotSend" aria-label="Envoyer">➤</button>
+    </div>
+  </div>
+
   <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-config.js"></script>
+  <script src="js/auth.js"></script>
   <script src="js/main.js"></script>
   <script src="js/message-widget.js"></script>
+  <script src="js/chatbot.js"></script>
 </body>
 </html>
