@@ -1,5 +1,5 @@
 console.log("Marronner – site chargé avec succès !");
-console.log("🔧 Version: 2.12.2024-20:35 - Debug Supabase + meilleurs messages erreur");
+console.log("🔧 Version: 2.12.2024-20:50 - Test FTP Deploy automatique");
 
 // ============================================
 // FONCTIONS POUR MODALES (déclarées en premier)
