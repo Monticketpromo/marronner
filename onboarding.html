@@ -1473,59 +1473,6 @@
         <h2 class="step-title">Définis tes tarifs</h2>
         <p class="step-description">Indique tes prix pour que les clients aient une idée de ton budget</p>
         
-        <!-- Proposition Premium -->
-        <div class="premium-offer">
-          <div class="premium-header">
-            <span class="premium-badge">⭐ PREMIUM</span>
-            <h3 style="margin: 10px 0 5px 0; font-size: 20px; color: #1F2937;">Passe au Premium pour booster ta visibilité</h3>
-            <p style="margin: 0; font-size: 14px; color: #6B7280;">Démarque-toi et accède à des avantages exclusifs</p>
-          </div>
-          
-          <div class="premium-plans">
-            <!-- Plan Mensuel -->
-            <div class="premium-plan" data-plan="monthly">
-              <div class="plan-header">
-                <span class="plan-period">Mensuel</span>
-                <div class="plan-price">
-                  <span class="price-amount">13,99€</span>
-                  <span class="price-period">/mois</span>
-                </div>
-              </div>
-              <ul class="plan-features">
-                <li>✓ Badge vérifié ✅</li>
-                <li>✓ 2 Go de stockage</li>
-                <li>✓ Profil mis en avant</li>
-                <li>✓ Statistiques avancées</li>
-                <li>✓ Support prioritaire</li>
-              </ul>
-              <button type="button" class="btn-select-plan" onclick="selectPremiumPlan('monthly')">Choisir Mensuel</button>
-            </div>
-            
-            <!-- Plan Annuel (meilleur deal) -->
-            <div class="premium-plan premium-plan-best" data-plan="yearly">
-              <div class="best-deal-badge">🔥 MEILLEUR CHOIX</div>
-              <div class="plan-header">
-                <span class="plan-period">Annuel</span>
-                <div class="plan-price">
-                  <span class="price-amount">149,99€</span>
-                  <span class="price-period">/an</span>
-                </div>
-                <span class="plan-saving">Économise 17,89€</span>
-              </div>
-              <ul class="plan-features">
-                <li>✓ Badge vérifié ✅</li>
-                <li>✓ 2 Go de stockage</li>
-                <li>✓ Profil mis en avant</li>
-                <li>✓ Statistiques avancées</li>
-                <li>✓ Support prioritaire</li>
-              </ul>
-              <button type="button" class="btn-select-plan btn-select-plan-best" onclick="selectPremiumPlan('yearly')">Choisir Annuel</button>
-            </div>
-          </div>
-          
-          <button type="button" class="btn-skip-premium" onclick="skipPremium()">Passer cette étape →</button>
-        </div>
-        
         <div class="form-group">
           <label for="tarifHoraire">Tarif horaire (en €)</label>
           <input type="number" id="tarifHoraire" name="tarifHoraire" min="10" step="5"
@@ -1886,39 +1833,6 @@
       
       // Mettre à jour le champ caché pour validation
       hiddenInput.value = selectedTools.join(', ');
-    }
-    
-    // 💎 Gestion Premium
-    let selectedPremiumPlan = null;
-    
-    function selectPremiumPlan(plan) {
-      selectedPremiumPlan = plan;
-      onboardingData.premiumPlan = plan; // Stocker dans les données
-      
-      // Retirer la classe selected de tous les plans
-      document.querySelectorAll('.premium-plan').forEach(p => p.classList.remove('selected'));
-      
-      // Ajouter la classe au plan sélectionné
-      const planElement = document.querySelector(`.premium-plan[data-plan="${plan}"]`);
-      if (planElement) {
-        planElement.classList.add('selected');
-      }
-      
-      // Afficher un toast
-      const planName = plan === 'yearly' ? 'Annuel (149,99€/an)' : 'Mensuel (13,99€/mois)';
-      showToast('success', 'Plan Premium sélectionné', `Tu as choisi le plan ${planName}`);
-      
-      // Masquer l'offre premium et afficher les champs tarifs
-      setTimeout(() => {
-        document.querySelector('.premium-offer').style.display = 'none';
-      }, 1000);
-    }
-    
-    function skipPremium() {
-      selectedPremiumPlan = null;
-      onboardingData.premiumPlan = null;
-      document.querySelector('.premium-offer').style.display = 'none';
-      showToast('info', 'Offre Premium ignorée', 'Tu pourras toujours passer Premium plus tard depuis ton profil.');
     }
     
     // 💎 Gestion Modal Premium Finale
