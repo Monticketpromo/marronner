@@ -535,6 +535,30 @@
       margin-bottom: 10px;
       flex-wrap: wrap;
     }
+    
+    .experience-item {
+      padding: 20px;
+      background: #F9FAFB;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      border: 2px solid #E5E7EB;
+    }
+    
+    .btn-remove-exp {
+      padding: 8px 16px;
+      background: #EF4444;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 13px;
+    }
+    
+    .btn-remove-exp:hover {
+      background: #DC2626;
+    }
   </style>
 </head>
 <body>
@@ -884,43 +908,36 @@
         <div class="form-group">
           <label for="bio">✍️ Biographie / Présentation *</label>
           <textarea id="bio" name="bio" class="textarea-modern" required
-                    placeholder="Présente-toi ! Parle de ton parcours, ta passion, ton style de travail...&#10;&#10;Ex: Graphiste freelance depuis 5 ans, je me spécialise dans l'identité visuelle et le branding. J'adore créer des designs modernes qui racontent une histoire. Disponible pour des projets créatifs à La Réunion 🌴"></textarea>
+                    placeholder="Présente-toi ! Parle de ton parcours, ta passion, ton style de travail...&#10;&#10;Ex: Passionné de création visuelle depuis toujours, je transforme les idées en designs impactants. Disponible pour des projets créatifs à La Réunion 🌴"></textarea>
           <small style="color: #6B7280; font-size: 12px;">Minimum 50 caractères • Plus c'est détaillé, mieux c'est !</small>
         </div>
         
-        <!-- Expérience -->
+        <!-- Expériences professionnelles -->
         <div class="form-group">
-          <label class="section-label">🎯 Domaines d'expérience *</label>
-          <p style="margin: 0 0 10px 0; font-size: 13px; color: #6B7280;">Coche toutes tes compétences (au moins 1)</p>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
-            <label class="checkbox-card">
-              <input type="checkbox" value="debutant" onchange="updateExperience()">
-              <span>🌱 Débutant (moins d'1 an)</span>
-            </label>
-            <label class="checkbox-card">
-              <input type="checkbox" value="1-3" onchange="updateExperience()">
-              <span>📈 1 à 3 ans</span>
-            </label>
-            <label class="checkbox-card">
-              <input type="checkbox" value="3-5" onchange="updateExperience()">
-              <span>⭐ 3 à 5 ans</span>
-            </label>
-            <label class="checkbox-card">
-              <input type="checkbox" value="5-10" onchange="updateExperience()">
-              <span>🏆 5 à 10 ans</span>
-            </label>
-            <label class="checkbox-card">
-              <input type="checkbox" value="10+" onchange="updateExperience()">
-              <span>👑 Plus de 10 ans</span>
-            </label>
+          <label class="section-label">💼 Expériences professionnelles *</label>
+          <p style="margin: 0 0 15px 0; font-size: 13px; color: #6B7280;">
+            Ajoute tes expériences comme sur un CV (au moins 1)
+          </p>
+          <div id="experiencesList">
+            <div class="experience-item">
+              <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                <input type="text" class="input-modern exp-title" placeholder="Ex: Graphiste freelance, Designer web..." required>
+                <input type="text" class="input-modern exp-year-start" placeholder="Ex: 2020" required>
+                <input type="text" class="input-modern exp-year-end" placeholder="Ex: 2024 ou En cours">
+              </div>
+              <textarea class="textarea-modern exp-description" rows="2" placeholder="Décris brièvement ce que tu as fait (optionnel)"></textarea>
+              <button type="button" class="btn-remove-exp" onclick="removeExperience(this)" style="display: none; margin-top: 10px;">✕ Supprimer</button>
+              <hr style="margin: 20px 0; border: none; border-top: 1px dashed #E5E7EB;">
+            </div>
           </div>
+          <button type="button" class="btn-add-link" onclick="addExperience()">+ Ajouter une expérience</button>
         </div>
         
         <!-- Compétences -->
         <div class="form-group">
-          <label for="competences">💼 Compétences clés *</label>
+          <label for="competences">🎯 Compétences & outils maîtrisés *</label>
           <input type="text" id="competences" name="competences" required class="input-modern"
-                 placeholder="Ex: Photoshop, Illustrator, Figma, Montage vidéo...">
+                 placeholder="Ex: Photoshop, Illustrator, Figma, Montage vidéo, SEO...">
           <small style="color: #6B7280; font-size: 11px;">Sépare par des virgules</small>
         </div>
         
@@ -1191,10 +1208,34 @@
       }
     }
     
-    // Gérer la sélection d'expérience (checkboxes)
-    function updateExperience() {
-      const checkboxes = document.querySelectorAll('.checkbox-card input[type="checkbox"]:checked');
-      onboardingData.experience = Array.from(checkboxes).map(cb => cb.value);
+    // Ajouter une expérience
+    function addExperience() {
+      const container = document.getElementById('experiencesList');
+      const newItem = document.createElement('div');
+      newItem.className = 'experience-item';
+      newItem.innerHTML = `
+        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+          <input type="text" class="input-modern exp-title" placeholder="Ex: Graphiste freelance..." required>
+          <input type="text" class="input-modern exp-year-start" placeholder="Ex: 2020" required>
+          <input type="text" class="input-modern exp-year-end" placeholder="Ex: 2024 ou En cours">
+        </div>
+        <textarea class="textarea-modern exp-description" rows="2" placeholder="Décris brièvement ce que tu as fait (optionnel)"></textarea>
+        <button type="button" class="btn-remove-exp" onclick="removeExperience(this)" style="margin-top: 10px;">✕ Supprimer</button>
+        <hr style="margin: 20px 0; border: none; border-top: 1px dashed #E5E7EB;">
+      `;
+      container.appendChild(newItem);
+    }
+    
+    // Retirer une expérience
+    function removeExperience(btn) {
+      btn.closest('.experience-item').remove();
+      
+      // S'il ne reste qu'une seule expérience, cacher son bouton de suppression
+      const items = document.querySelectorAll('.experience-item');
+      if (items.length === 1) {
+        const removeBtn = items[0].querySelector('.btn-remove-exp');
+        if (removeBtn) removeBtn.style.display = 'none';
+      }
     }
     
     // Gestion de la sélection des catégories
@@ -1227,10 +1268,30 @@
         const bio = document.getElementById('bio').value;
         const competences = document.getElementById('competences').value;
         
-        // Vérifier l'expérience (checkboxes)
-        const experienceChecked = document.querySelectorAll('.checkbox-card input[type="checkbox"]:checked');
-        if (experienceChecked.length === 0) {
-          showToast('error', 'Expérience requise', 'Coche au moins un domaine d\'expérience.');
+        // Récupérer toutes les expériences
+        const experienceItems = document.querySelectorAll('.experience-item');
+        const experiences = [];
+        let hasValidExperience = false;
+        
+        experienceItems.forEach(item => {
+          const title = item.querySelector('.exp-title').value.trim();
+          const yearStart = item.querySelector('.exp-year-start').value.trim();
+          const yearEnd = item.querySelector('.exp-year-end').value.trim();
+          const description = item.querySelector('.exp-description').value.trim();
+          
+          if (title && yearStart) {
+            hasValidExperience = true;
+            experiences.push({
+              title: title,
+              yearStart: yearStart,
+              yearEnd: yearEnd || 'En cours',
+              description: description
+            });
+          }
+        });
+        
+        if (!hasValidExperience) {
+          showToast('error', 'Expérience requise', 'Ajoute au moins une expérience (titre + année).');
           return;
         }
         
@@ -1267,7 +1328,7 @@
         const twitter = document.getElementById('twitter') ? document.getElementById('twitter').value.trim() : '';
         
         onboardingData.bio = bio;
-        onboardingData.experience = Array.from(experienceChecked).map(cb => cb.value);
+        onboardingData.experience = experiences;
         onboardingData.competences = competences;
         onboardingData.portfolioLinks = links;
         onboardingData.socialMedia = {
