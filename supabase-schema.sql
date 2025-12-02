@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   profile_photo TEXT,
   experience TEXT,
   competences TEXT[],
+  services JSONB, -- [{name, description, price, icon}]
   portfolio_links TEXT[],
   portfolio_images TEXT[],
   social_media JSONB,

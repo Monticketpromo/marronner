@@ -962,14 +962,14 @@
     
     <!-- Barre de progression -->
     <div class="progress-bar">
-      <div class="progress-fill" id="progressBar" style="width: 33%;"></div>
+      <div class="progress-fill" id="progressBar" style="width: 25%;"></div>
     </div>
     
     <!-- Étapes -->
     <div class="onboarding-steps">
       <div class="step active" data-step="1" onclick="goToStep(1)">
         <div class="step-number">1</div>
-        <span>Services</span>
+        <span>Catégories</span>
       </div>
       <div class="step" data-step="2" onclick="goToStep(2)">
         <div class="step-number">2</div>
@@ -977,6 +977,10 @@
       </div>
       <div class="step" data-step="3" onclick="goToStep(3)">
         <div class="step-number">3</div>
+        <span>Services</span>
+      </div>
+      <div class="step" data-step="4" onclick="goToStep(4)">
+        <div class="step-number">4</div>
         <span>Tarifs</span>
       </div>
     </div>
@@ -1468,10 +1472,82 @@
         </div>
       </div>
       
-      <!-- ÉTAPE 3 : Tarifs -->
+      <!-- ÉTAPE 3 : Services proposés -->
       <div class="step-content" id="step3">
-        <h2 class="step-title">Définis tes tarifs</h2>
-        <p class="step-description">Indique tes prix pour que les clients aient une idée de ton budget</p>
+        <h2 class="step-title">📦 Tes services proposés</h2>
+        <p class="step-description">Liste les services que tu proposes avec leurs descriptions et tarifs</p>
+        
+        <div id="servicesList" style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 20px;">
+          <!-- Service 1 par défaut -->
+          <div class="service-item" style="background: #F9FAFB; padding: 20px; border-radius: 12px; border: 2px solid #E5E7EB;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+              <h3 style="margin: 0; color: var(--primary); font-size: 16px;">Service #1</h3>
+              <button type="button" class="btn-remove-service" onclick="removeService(this)" style="display: none; background: #EF4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px;">✕ Retirer</button>
+            </div>
+            
+            <div style="display: grid; gap: 15px;">
+              <div>
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">
+                  Icône du service
+                </label>
+                <select class="input-modern service-icon" style="width: 100%;">
+                  <option value="🎨">🎨 Design</option>
+                  <option value="📱">📱 Digital</option>
+                  <option value="🖥️">🖥️ Web</option>
+                  <option value="📸">📸 Photo</option>
+                  <option value="🎥">🎥 Vidéo</option>
+                  <option value="✏️">✏️ Rédaction</option>
+                  <option value="💼">💼 Business</option>
+                  <option value="🏷️">🏷️ Branding</option>
+                  <option value="📄">📄 Documents</option>
+                  <option value="🎭">🎭 Créatif</option>
+                  <option value="📦">📦 Autre</option>
+                </select>
+              </div>
+              
+              <div>
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">
+                  Nom du service *
+                </label>
+                <input type="text" class="input-modern service-name" placeholder="Ex: Création de logo professionnel" required>
+              </div>
+              
+              <div>
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">
+                  Description *
+                </label>
+                <textarea class="input-modern service-description" rows="3" placeholder="Décris ce que tu proposes et ce qui est inclus..." required style="resize: vertical;"></textarea>
+              </div>
+              
+              <div>
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">
+                  Tarif (€) *
+                </label>
+                <input type="number" class="input-modern service-price" placeholder="150" min="0" step="10" required>
+                <small style="color: #6B7280; font-size: 12px;">Prix de départ "À partir de..."</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <button type="button" class="btn-add-service" onclick="addService()" style="width: 100%; padding: 12px 20px; background: var(--secondary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 20px;">
+          ➕ Ajouter un service
+        </button>
+        
+        <p style="background: #EFF6FF; padding: 12px; border-radius: 8px; font-size: 13px; color: #1E40AF; margin-bottom: 20px;">
+          💡 <strong>Astuce :</strong> Plus tes services sont détaillés, plus tu as de chances d'attirer des clients !
+        </p>
+        
+        <div class="form-actions">
+          <button class="btn-secondary" onclick="prevStep(2)">← Précédent</button>
+          <button class="btn-primary" onclick="nextStep(4)">Continuer →</button>
+        </div>
+      </div>
+      
+      <!-- ÉTAPE 4 : Tarifs généraux -->
+      <div class="step-content" id="step4">
+        <h2 class="step-title">Définis tes tarifs généraux</h2>
+        <p class="step-description">Indique tes prix globaux pour que les clients aient une idée de ton budget</p>
         
         <div class="form-group">
           <label for="tarifHoraire">Tarif horaire (en €)</label>
@@ -1512,7 +1588,7 @@
         </div>
         
         <div class="form-actions">
-          <button class="btn-secondary" onclick="prevStep(2)">← Précédent</button>
+          <button class="btn-secondary" onclick="prevStep(3)">← Précédent</button>
           <button class="btn-primary" onclick="completeOnboarding()">✅ Terminer</button>
         </div>
       </div>
@@ -1797,6 +1873,118 @@
       showToast('success', 'Outil ajouté', `${tool} ajouté à tes compétences.`);
     }
     
+    // 📦 Gestion des services
+    function addService() {
+      const container = document.getElementById('servicesList');
+      const serviceCount = container.querySelectorAll('.service-item').length;
+      
+      const newService = document.createElement('div');
+      newService.className = 'service-item';
+      newService.style.cssText = 'background: #F9FAFB; padding: 20px; border-radius: 12px; border: 2px solid #E5E7EB;';
+      newService.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+          <h3 style="margin: 0; color: var(--primary); font-size: 16px;">Service #${serviceCount + 1}</h3>
+          <button type="button" class="btn-remove-service" onclick="removeService(this)" style="background: #EF4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px;">✕ Retirer</button>
+        </div>
+        
+        <div style="display: grid; gap: 15px;">
+          <div>
+            <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">
+              Icône du service
+            </label>
+            <select class="input-modern service-icon" style="width: 100%;">
+              <option value="🎨">🎨 Design</option>
+              <option value="📱">📱 Digital</option>
+              <option value="🖥️">🖥️ Web</option>
+              <option value="📸">📸 Photo</option>
+              <option value="🎥">🎥 Vidéo</option>
+              <option value="✏️">✏️ Rédaction</option>
+              <option value="💼">💼 Business</option>
+              <option value="🏷️">🏷️ Branding</option>
+              <option value="📄">📄 Documents</option>
+              <option value="🎭">🎭 Créatif</option>
+              <option value="📦">📦 Autre</option>
+            </select>
+          </div>
+          
+          <div>
+            <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">
+              Nom du service *
+            </label>
+            <input type="text" class="input-modern service-name" placeholder="Ex: Création de logo professionnel" required>
+          </div>
+          
+          <div>
+            <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">
+              Description *
+            </label>
+            <textarea class="input-modern service-description" rows="3" placeholder="Décris ce que tu proposes et ce qui est inclus..." required style="resize: vertical;"></textarea>
+          </div>
+          
+          <div>
+            <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">
+              Tarif (€) *
+            </label>
+            <input type="number" class="input-modern service-price" placeholder="150" min="0" step="10" required>
+            <small style="color: #6B7280; font-size: 12px;">Prix de départ "À partir de..."</small>
+          </div>
+        </div>
+      `;
+      
+      container.appendChild(newService);
+      
+      // Afficher le bouton supprimer du premier service s'il était caché
+      const firstService = container.querySelector('.service-item');
+      const firstRemoveBtn = firstService.querySelector('.btn-remove-service');
+      if (firstRemoveBtn) firstRemoveBtn.style.display = 'block';
+      
+      showToast('success', 'Service ajouté', 'Tu peux maintenant remplir les informations');
+    }
+    
+    function removeService(btn) {
+      const serviceItem = btn.closest('.service-item');
+      const container = document.getElementById('servicesList');
+      
+      serviceItem.remove();
+      
+      // Renommer les services restants
+      const services = container.querySelectorAll('.service-item');
+      services.forEach((item, index) => {
+        const title = item.querySelector('h3');
+        if (title) title.textContent = `Service #${index + 1}`;
+      });
+      
+      // Si une seule reste, cacher son bouton supprimer
+      if (services.length === 1) {
+        const removeBtn = services[0].querySelector('.btn-remove-service');
+        if (removeBtn) removeBtn.style.display = 'none';
+      }
+      
+      showToast('info', 'Service retiré', 'Le service a été supprimé');
+    }
+    
+    // Ajouter un outil custom
+    function addCustomTool() {
+      const input = document.getElementById('customTool');
+      const tool = input.value.trim();
+      
+      if (!tool) {
+        showToast('warning', 'Champ vide', 'Saisis le nom de l\'outil.');
+        return;
+      }
+      
+      if (selectedTools.includes(tool)) {
+        showToast('info', 'Déjà ajouté', 'Cet outil est déjà dans ta liste.');
+        input.value = '';
+        return;
+      }
+      
+      selectedTools.push(tool);
+      updateSelectedToolsDisplay();
+      input.value = '';
+      showToast('success', 'Outil ajouté', `${tool} ajouté à tes compétences.`);
+    }
+    
     // Retirer un outil
     function removeTool(tool) {
       selectedTools = selectedTools.filter(t => t !== tool);
@@ -1992,7 +2180,7 @@
       document.querySelector(`.step[data-step="${stepNumber}"]`).classList.add('active');
       
       // Mettre à jour la barre de progression
-      const progress = (stepNumber / 3) * 100;
+      const progress = (stepNumber / 4) * 100;
       document.getElementById('progressBar').style.width = progress + '%';
       
       window.scrollTo(0, 0);
@@ -2012,7 +2200,7 @@
       document.querySelector(`.step[data-step="${stepNumber}"]`).classList.add('active');
       
       // Mettre à jour la barre de progression
-      const progress = (stepNumber / 3) * 100;
+      const progress = (stepNumber / 4) * 100;
       document.getElementById('progressBar').style.width = progress + '%';
       
       window.scrollTo(0, 0);
@@ -2029,7 +2217,37 @@
     
     // Compléter l'onboarding
     async function completeOnboarding() {
-      // Récupérer les données de l'étape 3
+      // Validation et récupération des services (étape 3)
+      const serviceItems = document.querySelectorAll('.service-item');
+      const services = [];
+      let hasValidService = false;
+      
+      serviceItems.forEach(item => {
+        const icon = item.querySelector('.service-icon').value;
+        const name = item.querySelector('.service-name').value.trim();
+        const description = item.querySelector('.service-description').value.trim();
+        const price = item.querySelector('.service-price').value;
+        
+        if (name && description && price) {
+          hasValidService = true;
+          services.push({
+            icon: icon,
+            name: name,
+            description: description,
+            price: parseInt(price)
+          });
+        }
+      });
+      
+      if (!hasValidService) {
+        showToast('error', 'Services manquants', 'Ajoute au moins un service avec nom, description et tarif');
+        goToStep(3);
+        return;
+      }
+      
+      onboardingData.services = services;
+      
+      // Récupérer les données de l'étape 4 (tarifs généraux)
       const tarifHoraire = document.getElementById('tarifHoraire').value;
       const tarifMinimum = document.getElementById('tarifMinimum').value;
       const disponibilite = document.getElementById('disponibilite').value;
@@ -2143,6 +2361,7 @@
             bio: onboardingData.bio,
             experience: onboardingData.experience,
             competences: onboardingData.competences.split(',').map(c => c.trim()),
+            services: onboardingData.services, // Les services proposés
             portfolio_links: onboardingData.portfolioLinks,
             portfolio_images: portfolioImageUrls,
             social_media: onboardingData.socialMedia,

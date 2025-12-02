@@ -463,6 +463,8 @@
     }
 
     function displayRealProfile(profile) {
+      console.log('Affichage profil réel:', profile);
+      
       // Afficher les données du profil réel
       document.getElementById('marronneurName').textContent = `${profile.first_name} ${profile.last_name}`;
       document.getElementById('marronneurAvatar').textContent = profile.profile_photo || '👤';
@@ -489,9 +491,9 @@
         document.getElementById('marronneurRate').textContent = 'Sur devis';
       }
       
-      // Bio
-      if (profile.bio) {
-        const bioElement = document.querySelector('[id="about"]').nextElementSibling;
+      // Bio - CORRIGÉ
+      const bioElement = document.getElementById('marronneurAbout');
+      if (bioElement && profile.bio) {
         bioElement.textContent = profile.bio;
       }
       
@@ -501,10 +503,33 @@
         competencesContainer.innerHTML = '';
         profile.competences.forEach(comp => {
           const badge = document.createElement('span');
-          badge.style.cssText = 'background: var(--light); color: var(--primary); padding: 8px 16px; border-radius: 20px; font-size: 0.9em; font-weight: 600;';
+          badge.style.cssText = 'background: linear-gradient(135deg, #eff6ff, #dbeafe); color: var(--secondary); padding: 10px 18px; border-radius: 25px; font-weight: 600; font-size: 0.95em; border: 1px solid #bfdbfe;';
           badge.textContent = comp;
           competencesContainer.appendChild(badge);
         });
+      }
+      
+      // Services proposés (si présents dans le profil)
+      if (profile.services && profile.services.length > 0) {
+        const servicesContainer = document.getElementById('servicesList');
+        if (servicesContainer) {
+          servicesContainer.innerHTML = '';
+          profile.services.forEach(service => {
+            const serviceDiv = document.createElement('div');
+            serviceDiv.style.cssText = 'border: 2px solid #e5e7eb; border-radius: 12px; padding: 20px; transition: all 0.3s ease;';
+            serviceDiv.onmouseover = function() { this.style.borderColor = 'var(--secondary)'; this.style.boxShadow = '0 4px 12px rgba(37,99,235,0.1)'; };
+            serviceDiv.onmouseout = function() { this.style.borderColor = '#e5e7eb'; this.style.boxShadow = 'none'; };
+            
+            serviceDiv.innerHTML = `
+              <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                <h3 style="margin: 0; color: var(--primary); font-size: 1.15em;">${service.icon || '📦'} ${service.name}</h3>
+                <span style="color: var(--secondary); font-weight: 700; font-size: 1.2em;">À partir de ${service.price}€</span>
+              </div>
+              <p style="margin: 10px 0 0 0; color: #6b7280; line-height: 1.6;">${service.description}</p>
+            `;
+            servicesContainer.appendChild(serviceDiv);
+          });
+        }
       }
       
       // Portfolio
