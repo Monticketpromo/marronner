@@ -1,5 +1,5 @@
 console.log("Marronner – site chargé avec succès !");
-console.log("🔧 Version: 2.12.2024-21:20 - Mot de passe oublié + templates emails");
+console.log("🔧 Version: 2.12.2024-21:30 - Toast partout + cleanup comptes test");
 
 // ============================================
 // SYSTÈME DE NOTIFICATIONS TOAST
@@ -38,6 +38,17 @@ function showToast(type, title, message) {
     setTimeout(() => toast.remove(), 300);
   }, 5000);
 }
+
+// Fonction de compatibilité pour l'ancien showMessage()
+window.showMessage = function(message, type = 'info') {
+  const typeMap = {
+    'success': 'success',
+    'error': 'error',
+    'info': 'info'
+  };
+  const mappedType = typeMap[type] || 'info';
+  showToast(mappedType, type === 'success' ? 'Succès' : type === 'error' ? 'Erreur' : 'Information', message);
+};
 
 // ============================================
 // FONCTIONS POUR MODALES (déclarées en premier)

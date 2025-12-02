@@ -224,7 +224,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       const result = await signInWithEmail(email, password);
       
       if (result.success) {
-        showMessage('Connexion réussie ! Bienvenue 👋', 'success');
+        if (typeof showToast === 'function') {
+          showToast('success', 'Connexion réussie !', 'Bienvenue sur Marronner 👋');
+        }
         
         // Fermer le modal
         const loginModal = document.getElementById('loginModal');

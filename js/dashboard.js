@@ -25,7 +25,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const profileResult = await getUserProfile(user.id);
     
     if (!profileResult.success) {
-      alert('Erreur lors du chargement du profil');
+      if (typeof showToast === 'function') {
+        showToast('error', 'Erreur', 'Impossible de charger ton profil.');
+      }
       loader.style.display = 'none';
       notLoggedIn.style.display = 'block';
       return;
@@ -69,12 +71,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     logoutBtn.addEventListener('click', async (e) => {
       e.preventDefault();
       
-      const confirmLogout = window.confirm('Es-tu sûr de vouloir te déconnecter ?');
-      if (!confirmLogout) return;
+      if (typeof showToast === 'function') {
+        showToast('success', 'À bientôt !', 'Tu as été déconnecté avec succès.');
+      }
       
-      // Déconnexion immédiate sans animation
-      await signOut();
-      window.location.href = 'index.html';
+      // Déconnexion après un court délai pour voir la notification
+      setTimeout(async () => {
+        await signOut();
+        window.location.href = 'index.html';
+      }, 800);
     });
   }
 });
