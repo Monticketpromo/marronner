@@ -1,5 +1,21 @@
 console.log("Marronner – site chargé avec succès !");
 
+// --- Chargement dynamique des modales d'authentification ---
+document.addEventListener("DOMContentLoaded", () => {
+  fetch('/auth-modals.html')
+    .then(response => response.text())
+    .then(html => {
+      // Insère les modales juste avant la fin du body
+      const div = document.createElement('div');
+      div.innerHTML = html;
+      document.body.appendChild(div);
+      
+      // Initialise les fonctionnalités des modales après chargement
+      initializeAuthModals();
+    })
+    .catch(error => console.error('Erreur chargement modales:', error));
+});
+
 // --- Animation d'apparition au scroll ---
 const scrollObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
@@ -81,7 +97,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // ============================================
   // GESTION MODAUX INSCRIPTION / CONNEXION
   // ============================================
-  
+// --- Initialisation des modales d'authentification ---
+function initializeAuthModals() {
   const signupModal = document.getElementById('signupModal');
   const loginModal = document.getElementById('loginModal');
   
@@ -151,7 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
       openModal(signupModal);
     });
   });
-  
+}
   // Gestion du bouton "S'inscrire par email"
   const emailSignupBtn = document.getElementById('emailSignupBtn');
   const backToStep1 = document.getElementById('backToStep1');
