@@ -1,5 +1,5 @@
 console.log("Marronner – site chargé avec succès !");
-console.log("🔧 Version: 2.12.2024-20:15 - Fix function order");
+console.log("🔧 Version: 2.12.2024-20:20 - Validation mdp temps réel");
 
 // ============================================
 // FONCTIONS POUR MODALES (déclarées en premier)
@@ -125,6 +125,82 @@ function initializeAuthModals() {
       openModal(signupModal);
     });
   });
+  
+  // ============================================
+  // VALIDATION EN TEMPS RÉEL DU MOT DE PASSE
+  // ============================================
+  
+  const passwordInput = document.getElementById('signupPassword');
+  const passwordConfirmInput = document.getElementById('signupPasswordConfirm');
+  
+  if (passwordInput) {
+    passwordInput.addEventListener('input', () => {
+      const password = passwordInput.value;
+      
+      // Vérifier chaque critère
+      const hasLength = password.length >= 8;
+      const hasUpper = /[A-Z]/.test(password);
+      const hasLower = /[a-z]/.test(password);
+      const hasNumber = /[0-9]/.test(password);
+      const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+      
+      // Mettre à jour les indicateurs visuels
+      updatePasswordRequirement('req-length', hasLength);
+      updatePasswordRequirement('req-upper', hasUpper);
+      updatePasswordRequirement('req-lower', hasLower);
+      updatePasswordRequirement('req-number', hasNumber);
+      updatePasswordRequirement('req-special', hasSpecial);
+      
+      // Vérifier la correspondance si confirmation déjà remplie
+      if (passwordConfirmInput && passwordConfirmInput.value) {
+        checkPasswordsMatch();
+      }
+    });
+  }
+  
+  if (passwordConfirmInput) {
+    passwordConfirmInput.addEventListener('input', checkPasswordsMatch);
+  }
+  
+  function updatePasswordRequirement(id, isValid) {
+    const element = document.getElementById(id);
+    if (!element) return;
+    
+    element.classList.remove('valid', 'invalid');
+    const reqIcon = element.querySelector('.req-icon');
+    
+    if (isValid) {
+      element.classList.add('valid');
+      if (reqIcon) reqIcon.textContent = '✓';
+    } else if (passwordInput.value.length > 0) {
+      element.classList.add('invalid');
+      if (reqIcon) reqIcon.textContent = '○';
+    } else {
+      if (reqIcon) reqIcon.textContent = '○';
+    }
+  }
+  
+  function checkPasswordsMatch() {
+    const password = passwordInput.value;
+    const passwordConfirm = passwordConfirmInput.value;
+    const matchElement = document.getElementById('req-match');
+    
+    if (!matchElement || !passwordConfirm) return;
+    
+    const isMatch = password === passwordConfirm && password.length > 0;
+    matchElement.classList.remove('valid', 'invalid');
+    const reqIcon = matchElement.querySelector('.req-icon');
+    
+    if (isMatch) {
+      matchElement.classList.add('valid');
+      if (reqIcon) reqIcon.textContent = '✓';
+    } else if (passwordConfirm.length > 0) {
+      matchElement.classList.add('invalid');
+      if (reqIcon) reqIcon.textContent = '✗';
+    } else {
+      if (reqIcon) reqIcon.textContent = '○';
+    }
+  }
 }
 
 // --- Chargement dynamique des modales d'authentification ---
