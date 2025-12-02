@@ -590,5 +590,18 @@
   </div>
 
   <script src="js/chatbot.js?v=20241202-2040"></script>
+  
+  <script>
+    // 🔒 Bloquer l'accès aux propositions pour les non-connectés
+    window.addEventListener('load', async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        // User non connecté → redirection avec message
+        alert('⚠️ Vous devez être connecté pour accéder aux propositions.\n\nConnectez-vous pour voir les propositions reçues sur vos demandes !');
+        window.location.href = 'index.html#login';
+      }
+    });
+  </script>
 </body>
 </html>

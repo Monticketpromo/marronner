@@ -353,6 +353,17 @@
         });
       }, 500);
     });
+    
+    // 🔒 Bloquer l'accès à la publication de demande pour les non-connectés
+    window.addEventListener('load', async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        // User non connecté → redirection avec message
+        alert('⚠️ Vous devez être connecté pour publier une demande.\n\nConnectez-vous ou inscrivez-vous pour poster votre demande !');
+        window.location.href = 'index.html#signup';
+      }
+    });
   </script>
 </body>
 </html>

@@ -647,5 +647,18 @@
   <script src="js/main.js?v=20241202-2040"></script>
   <script src="js/message-widget.js?v=20241202-2040"></script>
   <script src="js/chatbot.js?v=20241202-2040"></script>
+  
+  <script>
+    // 🔒 Bloquer l'accès aux demandes pour les non-connectés
+    window.addEventListener('load', async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        // User non connecté → redirection avec message
+        alert('⚠️ Vous devez être connecté pour accéder aux demandes des chercheurs.\n\nConnectez-vous ou inscrivez-vous pour voir les offres disponibles !');
+        window.location.href = 'index.html#login';
+      }
+    });
+  </script>
 </body>
 </html>
