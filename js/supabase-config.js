@@ -258,10 +258,15 @@ async function updateUIForLoggedInUser(user) {
   console.log('🎨 Mise à jour UI pour utilisateur connecté');
   
   try {
+    // 1. AFFICHER L'UI IMMÉDIATEMENT (ne pas attendre la requête)
+    document.querySelectorAll('.auth-link.logged-out').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.auth-link.logged-in').forEach(el => el.style.display = 'inline-block');
+    console.log('✅ Boutons affichés immédiatement');
+    
     let userType = 'Profil'; // Valeur par défaut
     let onboardingCompleted = false;
     
-    // Toujours récupérer le profil depuis la base de données pour avoir onboarding_completed
+    // 2. RÉCUPÉRER LE PROFIL EN ARRIÈRE-PLAN
     console.log('📡 Récupération du profil depuis la base...');
     const profileResult = await getUserProfile(user.id);
     console.log('📦 Résultat profil:', profileResult);
@@ -282,27 +287,22 @@ async function updateUIForLoggedInUser(user) {
       }
     }
     
-    // Rediriger vers l'onboarding si marronneur et onboarding non complété
-    const currentPage = window.location.pathname.split('/').pop();
-    if (userType === 'Marronneur' && !onboardingCompleted && currentPage !== 'onboarding.html') {
-      console.log('🚀 Redirection vers onboarding (profil incomplet)');
-      window.location.href = 'onboarding.html';
-      return;
-    }
-    
-    // Mettre à jour le texte du bouton profil
+    // 3. METTRE À JOUR LE TEXTE DU BOUTON
     const userTypeDisplay = document.getElementById('userTypeDisplay');
-    console.log('🔍 Élément userTypeDisplay trouvé:', userTypeDisplay);
     if (userTypeDisplay) {
       userTypeDisplay.textContent = userType;
       console.log('✅ Texte mis à jour:', userType);
-    } else {
-      console.warn('⚠️ Élément #userTypeDisplay non trouvé dans le DOM');
     }
     
-    // Masquer les boutons logged-out, afficher les boutons logged-in
-    document.querySelectorAll('.auth-link.logged-out').forEach(el => el.style.display = 'none');
-    document.querySelectorAll('.auth-link.logged-in').forEach(el => el.style.display = 'inline-block');
+    // 4. REDIRIGER SI ONBOARDING NON COMPLÉTÉ (seulement après avoir affiché l'UI)
+    const currentPage = window.location.pathname.split('/').pop();
+    if (userType === 'Marronneur' && !onboardingCompleted && currentPage !== 'onboarding.html') {
+      console.log('🚀 Redirection vers onboarding (profil incomplet)');
+      setTimeout(() => {
+        window.location.href = 'onboarding.html';
+      }, 500); // Petit délai pour voir l'UI
+      return;
+    }
     
     console.log('✅ UI mise à jour - Mode connecté');
   } catch (error) {
