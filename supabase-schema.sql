@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   -- Champs spécifiques aux marronneurs
   categories TEXT[],
   profile_photo TEXT,
-  experience TEXT,
+  experience JSONB, -- [{title, yearStart, yearEnd, description}]
   competences TEXT[],
   services JSONB, -- [{name, description, price, icon}]
   portfolio_links TEXT[],
