@@ -183,13 +183,18 @@ async function signOut() {
 async function getUserProfile(userId) {
   try {
     console.log('🔍 getUserProfile appelé pour userId:', userId);
+    console.time('⏱️ Durée requête getUserProfile');
     
-    // Créer une promesse avec timeout de 10 secondes
+    // Créer une promesse avec timeout de 5 secondes (réduit pour diagnostiquer plus vite)
     const timeout = new Promise((_, reject) => 
-      setTimeout(() => reject(new Error('Timeout après 10 secondes')), 10000)
+      setTimeout(() => {
+        console.timeEnd('⏱️ Durée requête getUserProfile');
+        reject(new Error('⏱️ TIMEOUT après 5 secondes - Requête trop lente'));
+      }, 5000)
     );
     
     // Utiliser select sans .single() pour éviter le bug
+    console.log('📡 Envoi requête vers Supabase...');
     const query = supabase
       .from('profiles')
       .select('*')
@@ -199,21 +204,28 @@ async function getUserProfile(userId) {
     // Race entre la requête et le timeout
     const result = await Promise.race([query, timeout]);
     
+    console.timeEnd('⏱️ Durée requête getUserProfile');
     console.log('🔍 Réponse Supabase brute:', result);
     
-    if (result.error) throw result.error;
+    if (result.error) {
+      console.error('❌ Erreur Supabase:', result.error);
+      throw result.error;
+    }
     
     // Prendre le premier élément du tableau
     const data = result.data && result.data.length > 0 ? result.data[0] : null;
     
     if (!data) {
-      throw new Error('Aucun profil trouvé');
+      console.warn('⚠️ Profil vide - Tableau data:', result.data);
+      throw new Error('Aucun profil trouvé dans la base');
     }
     
     console.log('✅ getUserProfile succès:', data);
     return { success: true, data };
   } catch (error) {
     console.error('❌ Erreur getUserProfile:', error);
+    console.error('❌ Type erreur:', error.constructor.name);
+    console.error('❌ Message:', error.message);
     return { success: false, error: error.message };
   }
 }
@@ -278,12 +290,18 @@ async function updateUIForLoggedInUser(user) {
       console.log('✅ Onboarding complété:', onboardingCompleted);
     } else {
       console.error('⚠️ Échec récupération profil:', profileResult.error);
+      
+      // ⚠️ SI LE PROFIL NE SE CHARGE PAS, ON CONSIDÈRE QUE L'ONBOARDING EST COMPLÉTÉ
+      // pour éviter la boucle infinie de redirection
+      onboardingCompleted = true;
+      console.warn('🔒 Profil non chargé - Onboarding considéré comme complété pour éviter boucle');
+      
       // Fallback sur les métadonnées si la base ne répond pas
       if (user.user_metadata && user.user_metadata.user_type) {
         userType = user.user_metadata.user_type === 'chercheur' ? 'Chercheur' : 'Marronneur';
         console.log('👤 Type utilisateur (fallback métadonnées):', userType);
       } else {
-        console.warn('⚠️ Profil non récupéré, utilisation de la valeur par défaut');
+        console.warn('⚠️ Type utilisateur inconnu, utilisation de la valeur par défaut');
       }
     }
     
@@ -294,9 +312,9 @@ async function updateUIForLoggedInUser(user) {
       console.log('✅ Texte mis à jour:', userType);
     }
     
-    // 4. REDIRIGER SI ONBOARDING NON COMPLÉTÉ (seulement après avoir affiché l'UI)
+    // 4. REDIRIGER SI ONBOARDING NON COMPLÉTÉ (seulement si on a réussi à charger le profil)
     const currentPage = window.location.pathname.split('/').pop();
-    if (userType === 'Marronneur' && !onboardingCompleted && currentPage !== 'onboarding.html') {
+    if (profileResult.success && userType === 'Marronneur' && !onboardingCompleted && currentPage !== 'onboarding.html') {
       console.log('🚀 Redirection vers onboarding (profil incomplet)');
       setTimeout(() => {
         window.location.href = 'onboarding.html';
