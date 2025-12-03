@@ -189,17 +189,27 @@ async function getUserProfile(userId) {
       setTimeout(() => reject(new Error('Timeout après 5 secondes')), 5000)
     );
     
+    // Utiliser select sans .single() pour éviter le bug
     const query = supabase
       .from('profiles')
       .select('*')
       .eq('id', userId)
-      .single();
+      .limit(1);
     
     // Race entre la requête et le timeout
-    const { data, error } = await Promise.race([query, timeout]);
-
-    console.log('🔍 Réponse Supabase:', { data, error });
-    if (error) throw error;
+    const result = await Promise.race([query, timeout]);
+    
+    console.log('🔍 Réponse Supabase brute:', result);
+    
+    if (result.error) throw result.error;
+    
+    // Prendre le premier élément du tableau
+    const data = result.data && result.data.length > 0 ? result.data[0] : null;
+    
+    if (!data) {
+      throw new Error('Aucun profil trouvé');
+    }
+    
     console.log('✅ getUserProfile succès:', data);
     return { success: true, data };
   } catch (error) {
