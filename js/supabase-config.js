@@ -182,16 +182,19 @@ async function signOut() {
 // Récupérer le profil utilisateur
 async function getUserProfile(userId) {
   try {
+    console.log('🔍 getUserProfile appelé pour userId:', userId);
     const { data, error } = await supabase
       .from('profiles')
       .select('*')
       .eq('id', userId)
       .single();
 
+    console.log('🔍 Réponse Supabase:', { data, error });
     if (error) throw error;
+    console.log('✅ getUserProfile succès:', data);
     return { success: true, data };
   } catch (error) {
-    console.error('Erreur profil:', error);
+    console.error('❌ Erreur getUserProfile:', error);
     return { success: false, error: error.message };
   }
 }
@@ -250,6 +253,7 @@ async function updateUIForLoggedInUser(user) {
       console.log('👤 Type utilisateur:', userType);
       console.log('✅ Onboarding complété:', onboardingCompleted);
     } else {
+      console.error('⚠️ Échec récupération profil:', profileResult.error);
       // Fallback sur les métadonnées si la base ne répond pas
       if (user.user_metadata && user.user_metadata.user_type) {
         userType = user.user_metadata.user_type === 'chercheur' ? 'Chercheur' : 'Marronneur';
