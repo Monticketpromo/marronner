@@ -239,21 +239,21 @@ async function updateUIForLoggedInUser(user) {
     let userType = 'Profil'; // Valeur par défaut
     let onboardingCompleted = false;
     
-    // D'abord essayer de récupérer depuis les métadonnées utilisateur
-    if (user.user_metadata && user.user_metadata.user_type) {
-      userType = user.user_metadata.user_type === 'chercheur' ? 'Chercheur' : 'Marronneur';
-      console.log('👤 Type utilisateur (depuis métadonnées):', userType);
+    // Toujours récupérer le profil depuis la base de données pour avoir onboarding_completed
+    console.log('📡 Récupération du profil depuis la base...');
+    const profileResult = await getUserProfile(user.id);
+    console.log('📦 Résultat profil:', profileResult);
+    
+    if (profileResult.success && profileResult.data) {
+      userType = profileResult.data.user_type === 'chercheur' ? 'Chercheur' : 'Marronneur';
+      onboardingCompleted = profileResult.data.onboarding_completed || false;
+      console.log('👤 Type utilisateur:', userType);
+      console.log('✅ Onboarding complété:', onboardingCompleted);
     } else {
-      // Sinon récupérer depuis la base de données
-      console.log('📡 Récupération du profil depuis la base...');
-      const profileResult = await getUserProfile(user.id);
-      console.log('📦 Résultat profil:', profileResult);
-      
-      if (profileResult.success && profileResult.data) {
-        userType = profileResult.data.user_type === 'chercheur' ? 'Chercheur' : 'Marronneur';
-        onboardingCompleted = profileResult.data.onboarding_completed || false;
-        console.log('👤 Type utilisateur (depuis base):', userType);
-        console.log('✅ Onboarding complété:', onboardingCompleted);
+      // Fallback sur les métadonnées si la base ne répond pas
+      if (user.user_metadata && user.user_metadata.user_type) {
+        userType = user.user_metadata.user_type === 'chercheur' ? 'Chercheur' : 'Marronneur';
+        console.log('👤 Type utilisateur (fallback métadonnées):', userType);
       } else {
         console.warn('⚠️ Profil non récupéré, utilisation de la valeur par défaut');
       }
