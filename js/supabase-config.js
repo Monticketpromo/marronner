@@ -11,12 +11,18 @@ if (typeof window.supabase === 'undefined') {
   console.log('✅ SDK Supabase chargé');
 }
 
-// Initialiser Supabase
-const supabase = window.supabase?.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-if (supabase) {
+// Initialiser Supabase (éviter redéclaration si déjà initialisé)
+if (!window.supabaseClient) {
+  window.supabaseClient = window.supabase?.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   console.log('✅ Client Supabase initialisé:', SUPABASE_URL);
 } else {
+  console.log('ℹ️ Client Supabase déjà initialisé');
+}
+
+// Alias pour compatibilité avec le code existant
+const supabase = window.supabaseClient;
+
+if (!supabase) {
   console.error('❌ Impossible d\'initialiser le client Supabase');
 }
 
